@@ -1,0 +1,249 @@
+---
+title: "TalkTypeE1"
+author: "Matt Crump"
+date: "6/13/2017"
+output: html_document
+---
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=3.4, fig.height=3.4, fig.path='Figs/',
+                       warning=FALSE, message=FALSE, fig.ext=".pdf",dev='pdf')
+```
+
+```{r,echo=FALSE,message=FALSE,error=FALSE,warning=FALSE}
+require(ggplot2)
+require(Crump)
+require(plyr)
+require(pander)
+require(knitr)
+require(xtable)
+```
+
+# read in turk data
+
+```{r,eval=FALSE}
+setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
+
+AllWPM<-matrix(0,ncol=2,nrow=48)
+df<-data.frame()
+for(sub in 1:48){
+  test<-scan(file="external_hitcommas.results", what = "character", sep = " ", skip=(0+sub), nlines=1)
+  data<-unlist(strsplit(test,split=":"))
+  if (length(data)==22){
+    print(c(sub,length(data)))
+    #14 is demographics
+    #15 is p1
+    #16 p1 times
+    #17 p1 letters
+    #18 p1 errors
+    # same for p2 19-22
+  subdata<-data.frame() 
+  for(i in 0:1){
+    iksi_index <- 16+i*4
+    char_index <- 17+i*4
+    error_index  <- 18+i*4
+    iksisT <- unlist(strsplit(data[iksi_index],split=","))
+    iksisT <-as.numeric(iksisT[3:length(iksisT)])
+    iksis<-iksisT[2:length(iksisT)]-iksisT[1:length(iksisT)-1]
+    lettersT <- unlist(strsplit(data[char_index],split=","))
+    lettersT <-as.character(lettersT[4:length(lettersT)])
+    errorsT <- unlist(strsplit(data[error_index],split=","))
+    errorsT <-as.numeric(errorsT[4:length(errorsT)])
+    subject<-rep(sub,length(iksis))
+    paragraph<-rep(i,length(iksis))
+    testlength<-c(length(iksis),length(lettersT),length(errorsT))
+    if (length(unique(testlength))==1) {
+    subdata<-data.frame(subject,paragraph,iksis,
+                   letters=lettersT,
+                   errors=errorsT)
+    df<-rbind(df,subdata)
+    }
+    #WPM[i+1]<-60/((RTs[length(RTs)]-RTs[1])/1000/(length(RTs)/5))
+  }
+    
+    #AllWPM[sub,]<-WPM
+  }
+}
+```
+
+# check for completeness
+
+```{r,eval=FALSE}
+incomplete<-c(6,15,21,22,44)
+restricted_df<-df[df$subject%in%incomplete==FALSE,]
+
+#get order variable to sort for letter position
+LetterPosition<-c()
+LetterType<-c()
+lp<-0
+for(i in 1:dim(restricted_df)[1]){
+  if(restricted_df[i,4]!=" "){
+    lp<-lp+1
+  } else {
+    lp<-0
+  }
+  LetterPosition<-c(LetterPosition,lp)
+  if(lp==1){
+    LetterType<-c(LetterType,"First")
+  } else if (lp==0){
+    LetterType<-c(LetterType,"Space")
+  }else{
+    LetterType<-c(LetterType,"Middle")
+  }
+    
+}
+restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
+
+#write.table(restricted_df,file="e1dataA.txt",sep="\t")
+
+#aggregate(iksis~paragraph,restricted_df,mean)
+#aggregate(errors~subject,restricted_df,mean)
+```
+
+# Say words vs. letters analysis
+
+```{r}
+setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
+restricted_df<-read.table(file="e1dataA.txt")
+
+#IKSI analysis
+restricted_rts<-restricted_df[restricted_df$errors==1,]
+#mean_iksis<-aggregate(iksis~subject*paragraph*LetterType,restricted_rts,mean)
+mean_iksis<-ddply(restricted_rts,.(subject,paragraph,LetterType),summarise,
+                  MIKSI=mean(vjout(iksis)$data),removed=1-vjout(iksis)$pr)
+mean_iksis$subject<-as.factor(mean_iksis$subject)
+mean_iksis$paragraph<-as.factor(mean_iksis$paragraph)
+aov.out<-aov(MIKSI~paragraph*LetterType+Error(subject/(paragraph*LetterType)),mean_iksis)
+kable(xtable(aov.out),format="markdown")
+model.tables(aov.out,"means")
+
+#aggregate(iksis~paragraph*LetterType,mean_iksis,mean)
+
+plot_Means<-ddply(mean_iksis,.(paragraph,LetterType),summarise,MEs=mean(MIKSI), SEs=stde(MIKSI))
+limits <- aes(ymax = MEs + SEs, ymin = MEs - SEs)
+levels(plot_Means$paragraph)<-c("Letter","Word")
+
+ggplot(plot_Means, aes(x=LetterType,y=MEs, group=paragraph, shape=paragraph))+
+  geom_line()+
+  geom_point(size=2)+
+  geom_errorbar(limits,width=.2)+
+  theme_classic(base_size=10)+
+  ylab("Mean IKSI")+
+  xlab("Keystroke Type")+
+   theme(legend.position = c(0, 0), legend.justification = c(0, 0))+
+  theme(legend.title = element_blank())
+
+#accuracy
+mean_errors<-aggregate(errors~subject*paragraph*LetterType,restricted_df,mean)
+mean_errors$subject<-as.factor(mean_errors$subject)
+mean_errors$paragraph<-as.factor(mean_errors$paragraph)
+aov.out<-aov(errors~paragraph*LetterType+Error(subject/(paragraph*LetterType)),mean_errors)
+kable(xtable(aov.out),format="markdown")
+aggregate(errors~paragraph,mean_errors,mean)
+
+plot_Means<-ddply(mean_errors,.(paragraph,LetterType),summarise,MEs=mean(errors), SEs=stde(errors))
+limits <- aes(ymax = MEs + SEs, ymin = MEs - SEs)
+levels(plot_Means$paragraph)<-c("Letter","Word")
+
+ggplot(plot_Means, aes(x=LetterType,y=MEs, group=paragraph, shape=paragraph))+
+  geom_line()+
+  geom_point(size=2)+
+  geom_errorbar(limits,width=.2)+
+  theme_classic(base_size=10)+
+  ylab("Mean Error Rate")+
+  xlab("Keystroke Type")+
+   theme(legend.position = "none", legend.justification = c(0, 0))+
+  theme(legend.title = element_blank())
+
+
+```
+
+# Letter slowing by skill
+
+```{r}
+slowing_effect<-mean_iksis[mean_iksis$paragraph==0,]$MIKSI-mean_iksis[mean_iksis$paragraph==1,]$MIKSI
+new_df<-data.frame(subject=mean_iksis[mean_iksis$paragraph==0,]$subject,
+                   meanWord=mean_iksis[mean_iksis$paragraph==1,]$MIKSI,
+                   slowing_effect)
+cor(new_df$meanWord,new_df$slowing_effect)
+```
+
+# power analysis for number of subjects needed
+
+```{r}
+mean_slow<-mean(slowing_effect)
+stde_slow<-stde(slowing_effect)
+
+sub_seq<-c(5,10,15,20,25,30,35,40)
+powersave<-c()
+for(j in sub_seq){
+  psave<-c()
+  for(k in 1:1000){
+    psave<-c(psave,t.test(rnorm(j,mean_slow,stde_slow))$p.value)
+  }
+  powersave<-c(powersave,length(psave[psave<.05])/1000)
+}
+powersave
+
+powersave<-c()
+for(j in sub_seq){
+  psave<-c()
+  for(k in 1:1000){
+    psave<-c(psave,t.test(rnorm(16,j,stde_slow))$p.value)
+  }
+  powersave<-c(powersave,length(psave[psave<.05])/1000)
+}
+powersave
+
+```
+
+
+# Letter frequency analysis
+```{r}
+setwd("~/Dropbox/DraftTable/Projects/LawrenceEEG/WordLength/norvig")
+
+norvigLetter<-read.csv("ngrams1.csv")
+headers<-readLines("ngrams1.csv",n=1)
+headers<-unlist(strsplit(headers,split=","))
+names(norvigLetter)<-headers
+letterProbs<-norvigLetter[,2]/sum(norvigLetter[,2])
+letters<-tolower(norvigLetter[,1])
+letterprob_df<-data.frame(letters,letterProbs)
+
+restricted_rts$letters<-tolower(restricted_rts$letters)
+
+mean_letter_iksis<-aggregate(iksis~subject*paragraph*letters,restricted_rts,mean)
+
+df_dim<-dim(mean_letter_iksis)
+lprob<-c()
+for(l in 1:df_dim[1]){
+  if(mean_letter_iksis[l,3]%in%letterprob_df$letters==TRUE){
+    lprob[l]<-letterprob_df[letterprob_df$letters==mean_letter_iksis[l,3],]$letterProbs
+  }
+}
+mean_letter_iksis<-cbind(mean_letter_iksis,lprob)
+
+sublist<-unique(mean_letter_iksis$subject)
+subfreq_df<-data.frame()
+for(s in sublist){
+  temp<-mean_letter_iksis[mean_letter_iksis$subject==s,]
+  temp<-temp[temp$letters%in%letterprob_df$letters==TRUE,]
+  tword<-temp[temp$paragraph==1,]
+  tletter<-temp[temp$paragraph==0,]
+  word_letfreqcor<-cor(tword$iksis,tword$lprob)
+  letter_letfreqcor<-cor(tletter$iksis,tletter$lprob)
+  sfreqcor<-data.frame(subject=c(s,s),paragraph=c(0,1),correlations=c(word_letfreqcor,letter_letfreqcor))
+  subfreq_df<-rbind(subfreq_df,sfreqcor)
+}
+
+subfreq_df$subject<-as.factor(subfreq_df$subject)
+subfreq_df$paragraph<-as.factor(subfreq_df$paragraph)
+aov.out<-aov(correlations~paragraph+Error(subject/paragraph),subfreq_df)
+kable(xtable(aov.out),format="markdown")
+aggregate(correlations~paragraph,subfreq_df,mean)
+
+difference_cors<-subfreq_df[subfreq_df$paragraph==0,]$correlations-subfreq_df[subfreq_df$paragraph==1,]$correlations
+  
+new_df<-cbind(new_df,difference_cors)
+```

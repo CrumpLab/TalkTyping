@@ -1,0 +1,305 @@
+---
+title: "TalkTypeE1b Elena's data"
+author: "Matt Crump"
+date: "6/13/2017"
+output: html_document
+---
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=3.4, fig.height=3.4, fig.path='Figs/',
+                       warning=FALSE, message=FALSE, fig.ext=".pdf",dev='pdf')
+```
+
+```{r,echo=FALSE,message=FALSE,error=FALSE,warning=FALSE}
+require(ggplot2)
+require(Crump)
+require(plyr)
+require(pander)
+require(knitr)
+require(xtable)
+require(stringdist)
+```
+
+```{r,eval=FALSE}
+#keytimes is a vector of IKSIs
+#keypresses is a vector of responses
+#dict is a vector of words, used to check errors
+continuousTyping<-function (keytimes,keypresses,dict){
+  #create words
+  words<-vector(mode="character",length=length(keytimes))
+  buildword<-c()
+  for(ii in 1:length(keypresses)){
+    if(keypresses[ii]!=" "){
+    buildword<-c(buildword,keypresses[ii])  
+    }else{
+      words[(ii-(length(buildword)+1)):ii]<-paste(buildword,collapse="")
+      buildword<-c()
+    }
+  }
+  words[(ii-(length(buildword)+1)):ii]<-paste(buildword,collapse="")
+  buildword<-c()
+  
+  #find closest matches
+  closest<-vector(mode="character",length=length(keytimes))
+  accuracy<-vector(mode="integer",length=length(keytimes))
+  distance<-vector(mode="integer",length=length(keytimes))
+  propCorrect<-vector(mode="integer",length=length(keytimes))
+  for (m in 1:length(words)){
+    if(tolower(words[m])%in%tolower(paragraph)==TRUE){
+      accuracy[m]<-1
+      closest[m]<-words[m]
+      distance[m]<-0
+    }else{
+      accuracy[m]<-0
+      closest[m]<-dict[amatch(words[m],paragraph,maxDist=6)] 
+      distance[m]<-stringdist(words[m],closest[m])
+    }
+    propCorrect[m]<-abs(distance[m]-length(unlist(strsplit(closest[m],split=""))))/length(unlist(strsplit(closest[m],split="")))
+  }
+  
+  makedf<-data.frame(iksis=keytimes,
+                     letters=keypresses,
+                     words,
+                     closest,
+                     accuracy,
+                     distance,
+                     propCorrect)
+  
+  return(makedf)
+  
+}
+
+```
+
+#  data
+
+```{r,eval=FALSE}
+setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1b/d")
+
+
+fnames<-list.files()
+fnames<-fnames[fnames!="p4c4.txt"]
+alldf<-data.frame()
+for(f in fnames){
+test<-scan(file=f, what="character", sep= "\n")
+subnum=f
+
+for(i in 0:3){
+#i=0
+temp<-unlist(strsplit(test[5+i*3],split="\t"))
+condition<-temp[1]
+paragraph<-as.character(unlist(strsplit(temp[4],split=" ")))
+temp<-unlist(strsplit(test[6+i*3],split="\t"))
+responses<-as.character(unlist(strsplit(temp[4],split="")))
+responses<-responses[2:length(responses)]
+word_responses<-as.character(unlist(strsplit(temp[4],split=" ")))
+temp<-unlist(strsplit(test[7+i*3],split="\t"))
+iksis<-as.numeric(unlist(strsplit(temp[4],split=",")))
+iksis<-iksis[2:length(iksis)]-iksis[1:length(iksis)-1]
+# 
+# word_df<-data.frame()
+# for(word in word_responses){
+#   letters<-unlist(strsplit(word,split=""))
+#   wordrep<-rep(word,length(letters))
+#   if(tolower(word)%in%tolower(paragraph)==TRUE){
+#     accuracy<-1
+#     closest<-word
+#     distance<-0
+#     wlength<-length(letters)
+#     letcorrect<-1
+#   }else{
+#     accuracy<-0
+#     findmatch<-amatch(word,paragraph,maxDist=6)
+#     closest<-paragraph[findmatch]
+#     distance<-stringdist(word,closest)
+#     wlength<-length(unlist(strsplit(closest,split="")))
+#     letcorrect<-(abs(wlength-distance)/wlength)
+#   }
+#   word_accuracy<-rep(accuracy,length(letters))
+#   best_match<-rep(closest,length(letters))
+#   str_distance<-rep(distance,length(letters))
+#   correct_word_length<-rep(wlength,length(letters))
+#   proportion_letter_correct<-rep(letcorrect,length(letters))
+#   t_df<-data.frame(wordrep,letters,word_accuracy,best_match,
+#                    str_distance,correct_word_length,proportion_letter_correct)
+#   addspace<-data.frame(wordrep="sp",
+#                        letters=" ",
+#                        word_accuracy=1,
+#                        best_match="sp",
+#                        str_distance=0,
+#                        correct_word_length=0,
+#                        proportion_letter_correct=1
+#                        )
+#   t_df<-rbind(t_df,addspace)
+#   word_df<-rbind(word_df,t_df)
+# }
+#tempRespIKSI<-data.frame(iksis,responses)
+#tempRespIKSI<-tempRespIKSI[tempRespIKSI$responses!=" ",]
+#word_df<-word_df[2:dim(word_df)[1],]
+#word_df<-cbind(word_df,tempRespIKSI)
+word_df<-continuousTyping(iksis,responses,paragraph)
+word_df<-cbind(word_df,suppression=rep(condition,dim(word_df)[1]))
+word_df<-cbind(word_df,subject=rep(subnum,dim(word_df)[1]))
+alldf<-rbind(alldf,word_df)
+}
+}
+
+
+VoiceCondition<-as.character(alldf$suppression)
+VoiceCondition[VoiceCondition%in%c("SilentLetter","SilentWord")==TRUE]<-"Silent"
+VoiceCondition[VoiceCondition!="Silent"]<-"Talk"
+ChunkCondition<-as.character(alldf$suppression)
+ChunkCondition[ChunkCondition%in%c("SilentLetter","TalkLetter")==TRUE]<-"Letter"
+ChunkCondition[ChunkCondition!="Letter"]<-"Word"
+alldf<-cbind(alldf,VoiceCondition,ChunkCondition)
+restricted_df<-alldf
+
+# Add letter position
+#get order variable to sort for letter position
+LetterPosition<-c()
+LetterType<-c()
+lp<-0
+for(i in 1:dim(restricted_df)[1]){
+  if(restricted_df[i,2]!=" "){
+    lp<-lp+1
+  } else {
+    lp<-0
+  }
+  LetterPosition<-c(LetterPosition,lp)
+  if(lp==1){
+    LetterType<-c(LetterType,"First")
+  } else if (lp==0){
+    LetterType<-c(LetterType,"Space")
+  }else{
+    LetterType<-c(LetterType,"Middle")
+  }
+    
+}
+restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
+
+#write.table(restricted_df,file="e1bdata.txt",sep="\t")
+
+```
+
+# check for completeness
+
+```{r}
+setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1b")
+restricted_df<-read.table(file="e1bdata.txt")
+
+```
+
+
+# main analysis
+
+```{r}
+#iksis
+restricted_rts<-restricted_df[restricted_df$accuracy==1,]
+restricted_rts<-restricted_rts[restricted_rts$iksis<5000,]
+
+mean_iksis<-ddply(restricted_rts,.(subject,VoiceCondition,ChunkCondition,LetterType),summarise,
+                  MIKSI=mean(vjout(iksis)$data),removed=1-vjout(iksis)$pr)
+
+aov.out<-aov(MIKSI~VoiceCondition*ChunkCondition*LetterType+Error(subject/(VoiceCondition*ChunkCondition*LetterType)),mean_iksis)
+kable(xtable(aov.out),format="markdown")
+
+plot_Means<-ddply(mean_iksis,.(VoiceCondition,ChunkCondition,LetterType),summarise,MEs=mean(MIKSI), SEs=stde(MIKSI))
+limits <- aes(ymax = MEs + SEs, ymin = MEs - SEs)
+
+ggplot(plot_Means, aes(x=LetterType,y=MEs, group=ChunkCondition, shape=ChunkCondition))+
+  geom_line()+
+  geom_point(size=2)+
+  geom_errorbar(limits,width=.2)+
+  theme_classic(base_size=10)+
+  ylab("Mean IKSI")+
+  xlab("Keystroke Type")+
+   theme(legend.position = c(1, 1), legend.justification = c(1, 1))+
+  theme(legend.title = element_blank())+facet_wrap(~VoiceCondition)
+
+
+#letter-level accuracy
+alldf<-restricted_df
+alldfr<-alldf[is.na(alldf$closest)==FALSE,]
+alldfr<-alldfr[alldfr$propCorrect<=1,]
+er_df<-ddply(alldfr,.(subject,VoiceCondition,ChunkCondition),summarise,er=mean(propCorrect))
+
+aov.out<-aov(er~VoiceCondition*ChunkCondition+Error(subject/(VoiceCondition*ChunkCondition)),er_df)
+kable(xtable(aov.out),format="markdown")
+aggregate(er~VoiceCondition*ChunkCondition,er_df,mean)
+```
+
+#comparisons
+
+```{r,eval=FALSE}
+comparisons<-mean_iksis[mean_iksis$ChunkCondition=="Letter",]
+aov.out<-aov(miksis~VoiceCondition+Error(subject/VoiceCondition),comparisons)
+kable(xtable(aov.out),format="markdown")
+aggregate(miksis~VoiceCondition,comparisons,mean)
+
+```
+
+# Letter frequency analysis
+```{r,eval=FALSE}
+setwd("~/Dropbox/DraftTable/Projects/LawrenceEEG/WordLength/norvig")
+
+norvigLetter<-read.csv("ngrams1.csv")
+headers<-readLines("ngrams1.csv",n=1)
+headers<-unlist(strsplit(headers,split=","))
+names(norvigLetter)<-headers
+letterProbs<-norvigLetter[,2]/sum(norvigLetter[,2])
+letters<-tolower(norvigLetter[,1])
+letterprob_df<-data.frame(letters,letterProbs)
+
+restricted_rts$letters<-tolower(restricted_rts$letters)
+
+mean_letter_iksis<-aggregate(iksis~subject*VoiceCondition*ChunkCondition*letters,restricted_rts,mean)
+
+df_dim<-dim(mean_letter_iksis)
+lprob<-c()
+for(l in 1:df_dim[1]){
+  if(mean_letter_iksis[l,4]%in%letterprob_df$letters==TRUE){
+    lprob[l]<-letterprob_df[letterprob_df$letters==mean_letter_iksis[l,4],]$letterProbs
+  }
+}
+mean_letter_iksis<-cbind(mean_letter_iksis,lprob)
+
+sublist<-unique(mean_letter_iksis$subject)
+subfreq_df<-data.frame()
+for(s in sublist){
+  temp<-mean_letter_iksis[mean_letter_iksis$subject==s,]
+  temp<-temp[temp$letters%in%letterprob_df$letters==TRUE,]
+  tSilentLetter<-temp[temp$VoiceCondition=="Silent" & temp$ChunkCondition=="Letter",]
+  tSilentWord<-temp[temp$VoiceCondition=="Silent" & temp$ChunkCondition=="Word",]
+  tTalkLetter<-temp[temp$VoiceCondition=="Talk" & temp$ChunkCondition=="Letter",]
+  tTalkWord<-temp[temp$VoiceCondition=="Talk" & temp$ChunkCondition=="Word",]
+  SilentLetter_letfreqcor<-cor(tSilentLetter$iksis,tSilentLetter$lprob)
+  SilentWord_letfreqcor<-cor(tSilentWord$iksis,tSilentWord$lprob)
+  TalkLetter_letfreqcor<-cor(tTalkLetter$iksis,tTalkLetter$lprob)
+  TalkWord_letfreqcor<-cor(tTalkWord$iksis,tTalkWord$lprob)
+  sfreqcor<-data.frame(subject=rep(s,4),
+                       suppression=c("SilentLetter",
+                                     "SilentWord",
+                                     "TalkLetter",
+                                     "TalkWord"),
+                       correlations=c(SilentLetter_letfreqcor,
+                                      SilentWord_letfreqcor,
+                                      TalkLetter_letfreqcor,
+                                      TalkWord_letfreqcor))
+  subfreq_df<-rbind(subfreq_df,sfreqcor)
+}
+
+VoiceCondition<-as.character(subfreq_df$suppression)
+VoiceCondition[VoiceCondition%in%c("SilentLetter","SilentWord")==TRUE]<-"Silent"
+VoiceCondition[VoiceCondition!="Silent"]<-"Talk"
+ChunkCondition<-as.character(subfreq_df$suppression)
+ChunkCondition[ChunkCondition%in%c("SilentLetter","TalkLetter")==TRUE]<-"Letter"
+ChunkCondition[ChunkCondition!="Letter"]<-"Word"
+subfreq_df<-cbind(subfreq_df,VoiceCondition,ChunkCondition)
+
+#subfreq_df$subject<-as.factor(subfreq_df$subject)
+aov.out<-aov(correlations~VoiceCondition*ChunkCondition+Error(subject/(VoiceCondition*ChunkCondition)),subfreq_df)
+kable(xtable(aov.out),format="markdown")
+aggregate(correlations~VoiceCondition*ChunkCondition,subfreq_df,mean)
+
+```
