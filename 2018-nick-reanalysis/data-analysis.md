@@ -67,7 +67,7 @@ limits <- aes(ymax = error + se, ymin = error - se)
 ggplot(error.summary,aes(x=condition, y=error,fill=condition))+
   geom_bar(stat="identity", position=position_dodge(width=0.9),color="black") + 
   geom_errorbar(limits, width = .2, position=position_dodge(width=0.9))+
-  coord_cartesian(ylim = c(0.1, .25))+
+  coord_cartesian(ylim = c(0, .25))+
   theme_classic(base_size=12)+
   labs(title="")+
   ylab("% Word Error Rates")+
@@ -80,9 +80,7 @@ ggplot(error.summary,aes(x=condition, y=error,fill=condition))+
 ``` r
 data$ACC<-as.numeric(as.character(data$ACC))
 
-error.data<-data%>%
-  filter(word_letterPos == 1,
-         word_length != 0) %>%
+error.data<-data %>%
   group_by(subject, condition) %>%
   summarize(
     N = n(),
@@ -102,9 +100,9 @@ kable(nice(aov.out, es = "pes", observed = NULL,
 
     ## Warning: 'sig.symbols' is deprecated; use 'sig_symbols' instead
 
-| Effect    | df    | MSE  | F    | pes  | p.value |
-|:----------|:------|:-----|:-----|:-----|:--------|
-| condition | 1, 43 | 0.00 | 0.16 | .004 | .69     |
+| Effect    | df    | MSE  | F    | pes | p.value |
+|:----------|:------|:-----|:-----|:----|:--------|
+| condition | 1, 43 | 0.00 | 0.87 | .02 | .36     |
 
 ``` r
 error.summary <- error.data %>%
@@ -121,7 +119,7 @@ limits <- aes(ymax = error + se, ymin = error - se)
 ggplot(error.summary,aes(x=condition, y=error,fill=condition))+
   geom_bar(stat="identity", position=position_dodge(width=0.9),color="black") + 
   geom_errorbar(limits, width = .2, position=position_dodge(width=0.9))+
-  #coord_cartesian(ylim = c(0.1, .25))+
+  coord_cartesian(ylim = c(0, .25))+
   theme_classic(base_size=12)+
   labs(title="")+
   ylab("% Letter Error Rates")+
