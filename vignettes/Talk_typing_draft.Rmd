@@ -153,22 +153,21 @@ round(proportion_word[proportion_word$InnerVoice=="undefined",]$p_word,digits=2)
 load("E1A_workspace.RData")
 ```
 
+### Experiment 1a
 
 For each subject, we applied the following pre-processing steps. We included IKSIs only for keystrokes involving a lower case letter, and only for correct keystrokes that were preceded by a correct keystroke. Outlier IKSIs were removed for each subject, on a cell-by-cell basis, using the @van1994solution non-recursive moving criterion procedure, which eliminated approximately `r round(mean(E1_data$prop_removed), digits=2)` of IKSIs from further analysis. An alpha criterion of .05 was set for all analyses.
 
-### Experiment 1a
+Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Linguistic Unit: Say Letters vs. Say Words) x 2 (Letter position: First letter vs. Middle Letter) repeated measures ANOVA. Mean IKSIs are displayed in Figure \@ref(fig:E1Figure).
 
-Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Inner Voice: Say Letters vs. Say Words) x 2 (Letter position: First letter vs. Middle Letter) repeated measures ANOVA. Mean IKSIs are displayed in Figure \@ref(fig:E1Figure).
-
-```{r E1Figure, echo=FALSE, fig.width=6, fig.height=3, fig.cap="Mean interkeystroke intervals (IKSIs in ms) and mean accuracy as a function of inner voice condition (Say Word vs. Say Letter), and letter position in word (first letter vs. middle letter). Middle letters were any remaining letter in the word."}
+```{r E1Figure, echo=FALSE, fig.width=6, fig.height=3, fig.cap="Mean interkeystroke intervals (IKSIs in ms) and mean accuracy as a function of linguistic unit condition (Say Word vs. Say Letter), and letter position in word (first letter vs. middle letter). Middle letters were any remaining letter in the word."}
 ggarrange(E1A_graph_iksi,E1A_graph_acc)
 ```
 
-The main effect of inner voice condition was significant, `r E1_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$linguistic_unit["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$linguistic_unit["say_letter"], digits=0)`) they were typing.
+The main effect of the linguistic unit condition was significant, `r E1_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$linguistic_unit["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$linguistic_unit["say_letter"], digits=0)`) they were typing.
 
 The main effect of letter position was significant, `r E1_apa_print$full_result$LetterType`. Mean IKSIs were longer for letters in the first position (`r printnum(E1_means$tables$LetterType["First"], digits=0)`), compared to letters in the other positions (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)`).
 
-The interaction between inner voice and letter position did not meet the significance criterion, `r E1_apa_print$full_result$linguistic_unit_LetterType`.
+The interaction between linguistic unit and letter position did not meet the significance criterion, `r E1_apa_print$full_result$linguistic_unit_LetterType`.
 
 A corresponding 2x2 repeated measures ANOVA was conducted on the mean accuracies for typing letters in each condition. Mean accuracies are shown in Figure \@ref(fig:E1Figure). Accuracy was uniformly high in all conditions, and there were no main effects or interaction.
 
@@ -176,11 +175,24 @@ Last, prior to the experiments subjects were asked if their inner voice usually 
 
 ### Experiment 1b
 
-Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Speech type: out loud vs. silent) x 2 (Task: words vs. letters) repeated measures ANOVA. 
+```{r}
+load("E1B_workspace.RData")
+```
 
-Only the main effect of task was significant, F (1, 14) = 43.38, MSE = 3775.74, p < .001. Again, mean IKSIs in the word condition (197 ms) were faster than the letter condition (301 ms). The main effect of speech type was not significant, and neither was the two-way interaction.
+Similar pre-processing rules were applied to the data. The exception was that accuracy was calculated at the word level rather than the letter level because the lab version of the experiment did not record accuracy at the letter level. Instead, IKSIs from words that were typed correctly were included in the IKSI analysis. The same outlier elimination procedure was applied, which excluded an average of  `r round(mean(E1B_data$prop_removed), digits=2)` observations from each condition The accuracy analysis was conducted at the word level.  Mean IKSIs and word level accuracy for each condition are displayed in Figure \@ref(fig:E1BFigure)
 
-A corresponding analysis of error rates found only a small but significant main effect of task, F (1, 14) = 6.96, MSE = .0015, p = 0.019. Mean error rates were slightly higher in the word (.12) than letter conditions (.09).
+```{r E1BFigure, echo=FALSE, fig.width=6, fig.height=3, fig.cap="Mean interkeystroke intervals (IKSIs in ms) as a function of voice (silent vs. talking), linguistic unit (Say Letter vs. Say word), and letter position (first vs. middle); and, mean accuracy as a function of voice and linguistic unit."}
+ggarrange(E1B_graph_iksi,E1B_graph_acc)
+```
+
+
+Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Voice: Silent vs. Talk) x 2 (Linguistic Unit: words vs. letters) x 2 (Letter position: first vs. middle) repeated measures ANOVA. 
+
+The main effect of the linguistic unit condition was significant, `r E1B_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1B_means$tables$linguistic_unit["Word"], digits=0)` ms), rather than the letters (`r printnum(E1B_means$tables$linguistic_unit["Letter"], digits=0)` ms) they were typing. The main effect of letter position was significant, `r E1B_apa_print$full_result$LetterType`. Mean IKSIs were longer for the first letter (`r printnum(E1B_means$tables$LetterType["First"], digits=0)` ms), compared to other letters  (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)` ms). The main effect of voice was not significant, `r E1B_apa_print$full_result$coice`. Mean IKSIs were shorter for silent speaking (`r printnum(E1B_means$tables$voice["Silent"], digits=0)` ms), compared to talking out loud  (`r printnum(E1B_means$tables$voice["Talk"], digits=0)` ms). These main effects were qualified by two interactions.
+
+The voice by letter position interaction was significant, `r E1B_apa_print$full_result$voice_LetterType`. The first letter slowing effect was larger when subjects spoke out loud rather than with their inner voice. Similarly, the linguistic unit by letter position interaction was significant, `r E1B_apa_print$full_result$linguistic_unit_LetterType`. The first letter slowing effect was larger when subjects said the letters rather than the words as they typed. The three-way interaction was not significant, `r E1B_apa_print$full_result$voice_linguistic_unit_LetterType`.
+
+The analysis of accuracy at the word level showed only a main effect of linguistic unit, `r E1Bacc_apa_print$full_result$linguistic_unit`. Subjects typed words more accurately when they said letters (`r printnum(E1Bacc_means$tables$linguistic_unit["Letter"], digits=2)`) compared to words (`r printnum(E1Bacc_means$tables$linguistic_unit["Word"], digits=2)`). The interaction between voice and linguistic unit was not significant, `r E1Bacc_apa_print$full_result$voice_linguistic_unit`.
 
 The mean responses for the inner voice questionnaire were that subjects' inner voice was silent 3%, said words 69%, said letters 16%, or said unrelated words or letters 12% of the time during typing.
 

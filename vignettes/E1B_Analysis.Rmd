@@ -32,13 +32,13 @@ E1B_data <- talk_type_E1B_data
 # IKSI analysis
 
 E1B_data <- E1B_data %>%
+           filter(accuracy == 1,
+                           iksis < 5000,
+                           LetterType != "Space") %>%
             mutate(subject = as.factor(subject),
                    voice = as.factor(voice),
                    linguistic_unit = as.factor(linguistic_unit),
                    LetterType = as.factor(LetterType)) %>%
-            filter(accuracy == 1,
-                   iksis < 5000,
-                   LetterType != "Space") %>%
             group_by(subject,voice,linguistic_unit,LetterType) %>%
             summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
                       prop_removed = modified_recursive_moving(iksis)$prop_removed)
