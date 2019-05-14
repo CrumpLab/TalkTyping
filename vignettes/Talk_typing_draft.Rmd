@@ -164,11 +164,11 @@ Mean IKSIs for correctly typed letters were computed for each subject in each co
 ggarrange(E1A_graph_iksi,E1A_graph_acc)
 ```
 
-The main effect of inner voice condition was significant, `r E1_apa_print$full_result$paragraph`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$paragraph["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$paragraph["say_letter"], digits=0)`) they were typing.
+The main effect of inner voice condition was significant, `r E1_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$linguistic_unit["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$linguistic_unit["say_letter"], digits=0)`) they were typing.
 
 The main effect of letter position was significant, `r E1_apa_print$full_result$LetterType`. Mean IKSIs were longer for letters in the first position (`r printnum(E1_means$tables$LetterType["First"], digits=0)`), compared to letters in the other positions (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)`).
 
-The interaction between inner voice and letter position did not meet the significance criterion, `r E1_apa_print$full_result$paragraph_LetterType`.
+The interaction between inner voice and letter position did not meet the significance criterion, `r E1_apa_print$full_result$linguistic_unit_LetterType`.
 
 A corresponding 2x2 repeated measures ANOVA was conducted on the mean accuracies for typing letters in each condition. Mean accuracies are shown in Figure \@ref(fig:E1Figure). Accuracy was uniformly high in all conditions, and there were no main effects or interaction.
 

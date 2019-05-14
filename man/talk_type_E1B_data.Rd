@@ -16,8 +16,8 @@
   \item{\code{propCorrect}}{double proportion of correct letters in word}
   \item{\code{suppression}}{character condition code}
   \item{\code{subject}}{character subject code}
-  \item{\code{VoiceCondition}}{character use inner voice or speak aloud}
-  \item{\code{ChunkCondition}}{character say letters or say words}
+  \item{\code{voice}}{character use inner voice or speak aloud}
+  \item{\code{linguistic_unit}}{character say letters or say words}
   \item{\code{LetterPosition}}{integer Serial position of letter in word}
   \item{\code{LetterType}}{character grouping factor, first letter vs other (middle) letters} 
 }}

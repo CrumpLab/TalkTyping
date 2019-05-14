@@ -7,7 +7,7 @@
 \format{A data frame with 18277 rows and 7 variables:
 \describe{
   \item{\code{subject}}{integer subject code, contains data from 40 participants}
-  \item{\code{paragraph}}{Factor say_letter = subjects were instructed to say the letters they were typing using their inner voice, say_word = subjects were instructed to say the words they were typinh using their inner voice.}
+  \item{\code{linguistic_unit}}{Factor say_letter = subjects were instructed to say the letters they were typing using their inner voice, say_word = subjects were instructed to say the words they were typinh using their inner voice.}
   \item{\code{iksis}}{integer Interkeystroke interval in milliseconds. The temporal interval between the previous keystroke and the current keystroke}
   \item{\code{letters}}{Factor the identity of the typed character}
   \item{\code{errors}}{integer Accuracy code, 1 = correct, 0 = type}

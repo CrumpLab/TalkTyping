@@ -67,6 +67,9 @@
     pdf
   </a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -127,12 +130,12 @@
 <a class="sourceLine" id="cb2-8" title="8"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(errors <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb2-9" title="9">                   iksis <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>,</a>
 <a class="sourceLine" id="cb2-10" title="10">                   LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,paragraph,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-12" title="12"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_iksi =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>restricted),</a>
 <a class="sourceLine" id="cb2-13" title="13">                      <span class="dt">prop_removed =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>prop_removed)</a>
 <a class="sourceLine" id="cb2-14" title="14">                  </a>
-<a class="sourceLine" id="cb2-15" title="15">E1_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>paragraph<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(paragraph<span class="op">*</span>LetterType)), E1_data)</a>
+<a class="sourceLine" id="cb2-15" title="15">E1_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1_data)</a>
 <a class="sourceLine" id="cb2-17" title="17"></a>
 <a class="sourceLine" id="cb2-18" title="18">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1_aov_out)))</a></code></pre></div>
 <table class="table">
@@ -154,7 +157,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>paragraph</td>
+<td>linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">76739.011</td>
 <td align="right">76739.0113</td>
@@ -162,7 +165,7 @@
 <td align="right">0.0000130</td>
 </tr>
 <tr class="odd">
-<td>Residuals1</td>
+<td>Residuals</td>
 <td align="right">39</td>
 <td align="right">120235.666</td>
 <td align="right">3082.9658</td>
@@ -186,7 +189,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>paragraph:LetterType</td>
+<td>linguistic_unit:LetterType</td>
 <td align="right">1</td>
 <td align="right">1547.208</td>
 <td align="right">1547.2079</td>
@@ -206,15 +209,15 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">E1_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1_aov_out)</a>
 <a class="sourceLine" id="cb3-2" title="2">E1_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1_aov_out,<span class="st">"means"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">E1A_iksi_table &lt;-<span class="st"> </span>E1_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(paragraph,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mIKSI =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_iksi),</a>
 <a class="sourceLine" id="cb4-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_iksi)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_iksi)))</a>
 <a class="sourceLine" id="cb4-5" title="5"></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_iksi_table<span class="op">$</span>paragraph) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_iksi_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
 <a class="sourceLine" id="cb4-7" title="7"></a>
-<a class="sourceLine" id="cb4-8" title="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,<span class="dt">y=</span>mIKSI, <span class="dt">group=</span>paragraph,</a>
-<a class="sourceLine" id="cb4-9" title="9">                         <span class="dt">shape=</span>paragraph,</a>
-<a class="sourceLine" id="cb4-10" title="10">                      <span class="dt">linetype=</span>paragraph))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-8" title="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,<span class="dt">y=</span>mIKSI, <span class="dt">group=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-9" title="9">                         <span class="dt">shape=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-10" title="10">                      <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-11" title="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-12" title="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
 <a class="sourceLine" id="cb4-13" title="13">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
@@ -230,7 +233,7 @@
 <a class="sourceLine" id="cb4-23" title="23">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_iksi_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">paragraph</th>
+<th align="left">linguistic_unit</th>
 <th align="left">LetterType</th>
 <th align="right">mIKSI</th>
 <th align="right">sem</th>
@@ -275,10 +278,10 @@
 <a class="sourceLine" id="cb6-6" title="6">E1acc_data &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-7" title="7"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-8" title="8"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject, paragraph, LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject, linguistic_unit, LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-10" title="10"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_acc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(errors))</a>
 <a class="sourceLine" id="cb6-11" title="11">                  </a>
-<a class="sourceLine" id="cb6-12" title="12">E1acc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>paragraph<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(paragraph<span class="op">*</span>LetterType)), E1acc_data)</a>
+<a class="sourceLine" id="cb6-12" title="12">E1acc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1acc_data)</a>
 <a class="sourceLine" id="cb6-13" title="13"></a>
 <a class="sourceLine" id="cb6-14" title="14">E1acc_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1acc_aov_out)</a>
 <a class="sourceLine" id="cb6-15" title="15">E1acc_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1acc_aov_out,<span class="st">"means"</span>)</a>
@@ -303,7 +306,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>paragraph</td>
+<td>linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">0.0039057</td>
 <td align="right">0.0039057</td>
@@ -311,7 +314,7 @@
 <td align="right">0.4083570</td>
 </tr>
 <tr class="odd">
-<td>Residuals1</td>
+<td>Residuals</td>
 <td align="right">39</td>
 <td align="right">0.2180470</td>
 <td align="right">0.0055909</td>
@@ -335,7 +338,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>paragraph:LetterType</td>
+<td>linguistic_unit:LetterType</td>
 <td align="right">1</td>
 <td align="right">0.0000369</td>
 <td align="right">0.0000369</td>
@@ -353,18 +356,18 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">E1A_acc_table &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(paragraph,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mAcc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_acc),</a>
 <a class="sourceLine" id="cb7-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_acc)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_acc)))</a>
 <a class="sourceLine" id="cb7-5" title="5"></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_acc_table<span class="op">$</span>paragraph) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_acc_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
 <a class="sourceLine" id="cb7-7" title="7"></a>
 <a class="sourceLine" id="cb7-8" title="8">E1A_graph_acc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_acc_table, </a>
 <a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,</a>
 <a class="sourceLine" id="cb7-10" title="10">                             <span class="dt">y=</span>mAcc, </a>
-<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>paragraph,</a>
-<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">shape=</span>paragraph,</a>
-<a class="sourceLine" id="cb7-13" title="13">                             <span class="dt">linetype=</span>paragraph))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">shape=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb7-13" title="13">                             <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
 <a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
 <a class="sourceLine" id="cb7-15" title="15"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
 <a class="sourceLine" id="cb7-16" title="16">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
@@ -381,7 +384,7 @@
 <a class="sourceLine" id="cb7-27" title="27">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_acc_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">paragraph</th>
+<th align="left">linguistic_unit</th>
 <th align="left">LetterType</th>
 <th align="right">mAcc</th>
 <th align="right">sem</th>

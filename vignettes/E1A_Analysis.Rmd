@@ -36,12 +36,12 @@ E1_data <- E1_data %>%
             filter(errors == 1,
                    iksis < 5000,
                    LetterType != "Space") %>%
-            group_by(subject,paragraph,LetterType) %>%
+            group_by(subject,linguistic_unit,LetterType) %>%
             summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
                       prop_removed = modified_recursive_moving(iksis)$prop_removed)
                   
-E1_aov_out <- aov(mean_iksi ~ paragraph*LetterType + 
-                    Error(subject/(paragraph*LetterType)), E1_data)
+E1_aov_out <- aov(mean_iksi ~ linguistic_unit*LetterType + 
+                    Error(subject/(linguistic_unit*LetterType)), E1_data)
 
 knitr::kable(xtable(summary(E1_aov_out)))
 
@@ -52,15 +52,15 @@ E1_means <- model.tables(E1_aov_out,"means")
 
 ```{r, fig.width=3, fig.height=3}
 E1A_iksi_table <- E1_data %>%
-              group_by(paragraph,LetterType) %>%
+              group_by(linguistic_unit,LetterType) %>%
               summarize(mIKSI = mean(mean_iksi),
                         sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
 
-levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+levels(E1A_iksi_table$linguistic_unit) <- c("Say Letter", "Say Word")
 
-E1A_graph_iksi <- ggplot(E1A_iksi_table, aes(x=LetterType,y=mIKSI, group=paragraph,
-                         shape=paragraph,
-                      linetype=paragraph))+
+E1A_graph_iksi <- ggplot(E1A_iksi_table, aes(x=LetterType,y=mIKSI, group=linguistic_unit,
+                         shape=linguistic_unit,
+                      linetype=linguistic_unit))+
   geom_line()+
   geom_errorbar(aes(ymin=mIKSI-sem,
                     ymax=mIKSI+sem), width=.1,
@@ -90,10 +90,10 @@ E1acc_data <- talk_type_E1A_data
 E1acc_data <- E1acc_data %>%
                 mutate(subject = as.factor(subject)) %>%
                 filter(LetterType != "Space") %>%
-                group_by(subject, paragraph, LetterType) %>%
+                group_by(subject, linguistic_unit, LetterType) %>%
                 summarise(mean_acc = mean(errors))
                   
-E1acc_aov_out <- aov(mean_acc ~ paragraph*LetterType + Error(subject/(paragraph*LetterType)), E1acc_data)
+E1acc_aov_out <- aov(mean_acc ~ linguistic_unit*LetterType + Error(subject/(linguistic_unit*LetterType)), E1acc_data)
 
 E1acc_apa_print <- apa_print(E1acc_aov_out)
 E1acc_means <- model.tables(E1acc_aov_out,"means")
@@ -104,18 +104,18 @@ knitr::kable(xtable(summary(E1acc_aov_out)))
 
 ```{r, fig.width=3, fig.height=3}
 E1A_acc_table <- E1acc_data %>%
-              group_by(paragraph,LetterType) %>%
+              group_by(linguistic_unit,LetterType) %>%
               summarize(mAcc = mean(mean_acc),
                         sem = sd(mean_acc)/sqrt(length(mean_acc)))
 
-levels(E1A_acc_table$paragraph) <- c("Say Letter", "Say Word")
+levels(E1A_acc_table$linguistic_unit) <- c("Say Letter", "Say Word")
 
 E1A_graph_acc <- ggplot(E1A_acc_table, 
                          aes(x=LetterType,
                              y=mAcc, 
-                             group=paragraph,
-                             shape=paragraph,
-                             linetype=paragraph))+
+                             group=linguistic_unit,
+                             shape=linguistic_unit,
+                             linetype=linguistic_unit))+
   geom_line()+
   geom_errorbar(aes(ymin=mAcc-sem,
                     ymax=mAcc+sem), width=.1,

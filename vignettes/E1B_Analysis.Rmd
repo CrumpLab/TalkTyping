@@ -33,18 +33,18 @@ E1B_data <- talk_type_E1B_data
 
 E1B_data <- E1B_data %>%
             mutate(subject = as.factor(subject),
-                   VoiceCondition = as.factor(VoiceCondition),
-                   ChunkCondition = as.factor(ChunkCondition),
+                   voice = as.factor(voice),
+                   linguistic_unit = as.factor(linguistic_unit),
                    LetterType = as.factor(LetterType)) %>%
             filter(accuracy == 1,
                    iksis < 5000,
                    LetterType != "Space") %>%
-            group_by(subject,VoiceCondition,ChunkCondition,LetterType) %>%
+            group_by(subject,voice,linguistic_unit,LetterType) %>%
             summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
                       prop_removed = modified_recursive_moving(iksis)$prop_removed)
                   
-E1B_aov_out <- aov(mean_iksi ~ VoiceCondition*ChunkCondition*LetterType + 
-                    Error(subject/(VoiceCondition*ChunkCondition*LetterType)), E1B_data)
+E1B_aov_out <- aov(mean_iksi ~ voice*linguistic_unit*LetterType + 
+                    Error(subject/(voice*linguistic_unit*LetterType)), E1B_data)
 
 knitr::kable(xtable(summary(E1B_aov_out)))
 
@@ -55,7 +55,7 @@ E1B_means <- model.tables(E1B_aov_out,"means")
 
 ```{r, fig.width=3, fig.height=3}
 E1B_iksi_table <- E1B_data %>%
-              group_by(VoiceCondition,ChunkCondition,LetterType) %>%
+              group_by(voice,linguistic_unit,LetterType) %>%
               summarize(mIKSI = mean(mean_iksi),
                         sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
 
@@ -63,9 +63,9 @@ E1B_iksi_table <- E1B_data %>%
 
 E1B_graph_iksi <- ggplot(E1B_iksi_table, aes(x=LetterType,
                                              y=mIKSI,
-                                             group=ChunkCondition,
-                                             shape=ChunkCondition,
-                                             linetype=ChunkCondition))+
+                                             group=linguistic_unit,
+                                             shape=linguistic_unit,
+                                             linetype=linguistic_unit))+
   geom_line()+
   geom_errorbar(aes(ymin=mIKSI-sem,
                     ymax=mIKSI+sem), width=.1,
@@ -77,7 +77,7 @@ E1B_graph_iksi <- ggplot(E1B_iksi_table, aes(x=LetterType,
         legend.title = element_blank())+
   ylab("Mean IKSI (ms)")+
   xlab("Letter position")+
-  facet_wrap(~VoiceCondition)
+  facet_wrap(~voice)
 
 knitr::kable(E1B_iksi_table)
 E1B_graph_iksi
@@ -95,15 +95,15 @@ E1Bacc_data <- talk_type_E1B_data
 
 E1Bacc_data <- E1Bacc_data %>%
                 mutate(subject = as.factor(subject),
-                       VoiceCondition = as.factor(VoiceCondition),
-                       ChunkCondition = as.factor(ChunkCondition),
+                       voice = as.factor(voice),
+                       linguistic_unit = as.factor(linguistic_unit),
                        LetterType = as.factor(LetterType)) %>%
                 filter(LetterType != "Space",
                        LetterPosition == 1) %>%
-                group_by(subject,VoiceCondition,ChunkCondition) %>%
+                group_by(subject,voice,linguistic_unit) %>%
                 summarise(mean_acc = mean(accuracy))
                   
-E1Bacc_aov_out <- aov(mean_acc ~ VoiceCondition*ChunkCondition + Error(subject/(VoiceCondition*ChunkCondition)), E1Bacc_data)
+E1Bacc_aov_out <- aov(mean_acc ~ voice*linguistic_unit + Error(subject/(voice*linguistic_unit)), E1Bacc_data)
 
 E1Bacc_apa_print <- apa_print(E1Bacc_aov_out)
 E1Bacc_means <- model.tables(E1Bacc_aov_out,"means")
@@ -114,18 +114,18 @@ knitr::kable(xtable(summary(E1Bacc_aov_out)))
 
 ```{r, fig.width=3, fig.height=3}
 E1B_acc_table <- E1Bacc_data %>%
-              group_by(VoiceCondition,ChunkCondition) %>%
+              group_by(voice,linguistic_unit) %>%
               summarize(mAcc = mean(mean_acc),
                         sem = sd(mean_acc)/sqrt(length(mean_acc)))
 
 #levels(E1A_acc_table$paragraph) <- c("Say Letter", "Say Word")
 
 E1B_graph_acc <- ggplot(E1B_acc_table, 
-                         aes(x=VoiceCondition,
+                         aes(x=voice,
                              y=mAcc, 
-                             group=ChunkCondition,
-                             shape=ChunkCondition,
-                             linetype=ChunkCondition))+
+                             group=linguistic_unit,
+                             shape=linguistic_unit,
+                             linetype=linguistic_unit))+
   geom_line()+
   geom_errorbar(aes(ymin=mAcc-sem,
                     ymax=mAcc+sem), width=.1,
@@ -156,5 +156,14 @@ ggarrange(E1B_graph_iksi,E1B_graph_acc)
 
 ```{r}
 save.image(file="E1B_workspace.RData")
+```
+
+
+```{r, eval=FALSE}
+talk_type_E1B_data <- talk_type_E1B_data %>%
+                        rename(voice = VoiceCondition,
+                               linguistic_unit = ChunkCondition)
+
+save(talk_type_E1B_data, file="talk_type_E1B_data.RData")
 ```
 

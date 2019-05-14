@@ -12,6 +12,7 @@ navbar:
     - home
     - articles
     - pdfVersion
+    - news
     right:
     - reference
     - github
@@ -28,6 +29,8 @@ navbar:
     reference:
       text: Data
       href: reference/index.html
+    news:
+      text: News
     pdfVersion:
       text: pdf
       icon: fa-file

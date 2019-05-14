@@ -67,6 +67,9 @@
     pdf
   </a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -124,18 +127,18 @@
 <a class="sourceLine" id="cb2-5" title="5"></a>
 <a class="sourceLine" id="cb2-6" title="6">E1B_data &lt;-<span class="st"> </span>E1B_data <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-7" title="7"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject),</a>
-<a class="sourceLine" id="cb2-8" title="8">                   <span class="dt">VoiceCondition =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(VoiceCondition),</a>
-<a class="sourceLine" id="cb2-9" title="9">                   <span class="dt">ChunkCondition =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(ChunkCondition),</a>
+<a class="sourceLine" id="cb2-8" title="8">                   <span class="dt">voice =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(voice),</a>
+<a class="sourceLine" id="cb2-9" title="9">                   <span class="dt">linguistic_unit =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(linguistic_unit),</a>
 <a class="sourceLine" id="cb2-10" title="10">                   <span class="dt">LetterType =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(LetterType)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-11" title="11"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(accuracy <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb2-12" title="12">                   iksis <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>,</a>
 <a class="sourceLine" id="cb2-13" title="13">                   LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,VoiceCondition,ChunkCondition,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,voice,linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-15" title="15"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_iksi =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>restricted),</a>
 <a class="sourceLine" id="cb2-16" title="16">                      <span class="dt">prop_removed =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>prop_removed)</a>
 <a class="sourceLine" id="cb2-17" title="17">                  </a>
-<a class="sourceLine" id="cb2-18" title="18">E1B_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>VoiceCondition<span class="op">*</span>ChunkCondition<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(VoiceCondition<span class="op">*</span>ChunkCondition<span class="op">*</span>LetterType)), E1B_data)</a>
+<a class="sourceLine" id="cb2-18" title="18">E1B_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>voice<span class="op">*</span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(voice<span class="op">*</span>linguistic_unit<span class="op">*</span>LetterType)), E1B_data)</a>
 <a class="sourceLine" id="cb2-20" title="20"></a>
 <a class="sourceLine" id="cb2-21" title="21">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1B_aov_out)))</a></code></pre></div>
 <table class="table">
@@ -157,7 +160,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition</td>
+<td>voice</td>
 <td align="right">1</td>
 <td align="right">12916.437</td>
 <td align="right">12916.437</td>
@@ -165,7 +168,7 @@
 <td align="right">0.0701924</td>
 </tr>
 <tr class="odd">
-<td>Residuals</td>
+<td>Residuals1</td>
 <td align="right">14</td>
 <td align="right">47064.807</td>
 <td align="right">3361.772</td>
@@ -173,7 +176,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>ChunkCondition</td>
+<td>linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">478311.239</td>
 <td align="right">478311.239</td>
@@ -181,7 +184,7 @@
 <td align="right">0.0002154</td>
 </tr>
 <tr class="odd">
-<td>Residuals 1</td>
+<td>Residuals</td>
 <td align="right">14</td>
 <td align="right">273845.172</td>
 <td align="right">19560.369</td>
@@ -205,7 +208,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition:ChunkCondition</td>
+<td>voice:linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">14780.113</td>
 <td align="right">14780.113</td>
@@ -221,7 +224,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition:LetterType</td>
+<td>voice:LetterType</td>
 <td align="right">1</td>
 <td align="right">7204.638</td>
 <td align="right">7204.638</td>
@@ -237,7 +240,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>ChunkCondition:LetterType</td>
+<td>linguistic_unit:LetterType</td>
 <td align="right">1</td>
 <td align="right">22244.101</td>
 <td align="right">22244.101</td>
@@ -245,7 +248,7 @@
 <td align="right">0.0143047</td>
 </tr>
 <tr class="odd">
-<td>Residuals 1</td>
+<td>Residuals</td>
 <td align="right">14</td>
 <td align="right">39847.773</td>
 <td align="right">2846.270</td>
@@ -253,7 +256,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition:ChunkCondition:LetterType</td>
+<td>voice:linguistic_unit:LetterType</td>
 <td align="right">1</td>
 <td align="right">4632.377</td>
 <td align="right">4632.377</td>
@@ -273,7 +276,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">E1B_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1B_aov_out)</a>
 <a class="sourceLine" id="cb3-2" title="2">E1B_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1B_aov_out,<span class="st">"means"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">E1B_iksi_table &lt;-<span class="st"> </span>E1B_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(VoiceCondition,ChunkCondition,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(voice,linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mIKSI =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_iksi),</a>
 <a class="sourceLine" id="cb4-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_iksi)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_iksi)))</a>
 <a class="sourceLine" id="cb4-5" title="5"></a>
@@ -281,9 +284,9 @@
 <a class="sourceLine" id="cb4-7" title="7"></a>
 <a class="sourceLine" id="cb4-8" title="8">E1B_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1B_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,</a>
 <a class="sourceLine" id="cb4-9" title="9">                                             <span class="dt">y=</span>mIKSI,</a>
-<a class="sourceLine" id="cb4-10" title="10">                                             <span class="dt">group=</span>ChunkCondition,</a>
-<a class="sourceLine" id="cb4-11" title="11">                                             <span class="dt">shape=</span>ChunkCondition,</a>
-<a class="sourceLine" id="cb4-12" title="12">                                             <span class="dt">linetype=</span>ChunkCondition))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-10" title="10">                                             <span class="dt">group=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-11" title="11">                                             <span class="dt">shape=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-12" title="12">                                             <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-13" title="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
 <a class="sourceLine" id="cb4-15" title="15">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
@@ -295,13 +298,13 @@
 <a class="sourceLine" id="cb4-21" title="21">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-22" title="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
 <a class="sourceLine" id="cb4-23" title="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Letter position"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-24" title="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>VoiceCondition)</a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>voice)</a>
 <a class="sourceLine" id="cb4-25" title="25"></a>
 <a class="sourceLine" id="cb4-26" title="26">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1B_iksi_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">VoiceCondition</th>
-<th align="left">ChunkCondition</th>
+<th align="left">voice</th>
+<th align="left">linguistic_unit</th>
 <th align="left">LetterType</th>
 <th align="right">mIKSI</th>
 <th align="right">sem</th>
@@ -377,15 +380,15 @@
 <a class="sourceLine" id="cb6-5" title="5"></a>
 <a class="sourceLine" id="cb6-6" title="6">E1Bacc_data &lt;-<span class="st"> </span>E1Bacc_data <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-7" title="7"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject),</a>
-<a class="sourceLine" id="cb6-8" title="8">                       <span class="dt">VoiceCondition =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(VoiceCondition),</a>
-<a class="sourceLine" id="cb6-9" title="9">                       <span class="dt">ChunkCondition =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(ChunkCondition),</a>
+<a class="sourceLine" id="cb6-8" title="8">                       <span class="dt">voice =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(voice),</a>
+<a class="sourceLine" id="cb6-9" title="9">                       <span class="dt">linguistic_unit =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(linguistic_unit),</a>
 <a class="sourceLine" id="cb6-10" title="10">                       <span class="dt">LetterType =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(LetterType)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-11" title="11"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(LetterType <span class="op">!=</span><span class="st"> "Space"</span>,</a>
 <a class="sourceLine" id="cb6-12" title="12">                       LetterPosition <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,VoiceCondition,ChunkCondition) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,voice,linguistic_unit) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-14" title="14"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_acc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(accuracy))</a>
 <a class="sourceLine" id="cb6-15" title="15">                  </a>
-<a class="sourceLine" id="cb6-16" title="16">E1Bacc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>VoiceCondition<span class="op">*</span>ChunkCondition <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(VoiceCondition<span class="op">*</span>ChunkCondition)), E1Bacc_data)</a>
+<a class="sourceLine" id="cb6-16" title="16">E1Bacc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>voice<span class="op">*</span>linguistic_unit <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(voice<span class="op">*</span>linguistic_unit)), E1Bacc_data)</a>
 <a class="sourceLine" id="cb6-17" title="17"></a>
 <a class="sourceLine" id="cb6-18" title="18">E1Bacc_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1Bacc_aov_out)</a>
 <a class="sourceLine" id="cb6-19" title="19">E1Bacc_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1Bacc_aov_out,<span class="st">"means"</span>)</a>
@@ -410,7 +413,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition</td>
+<td>voice</td>
 <td align="right">1</td>
 <td align="right">0.0045200</td>
 <td align="right">0.0045200</td>
@@ -418,7 +421,7 @@
 <td align="right">0.0856784</td>
 </tr>
 <tr class="odd">
-<td>Residuals</td>
+<td>Residuals1</td>
 <td align="right">14</td>
 <td align="right">0.0185086</td>
 <td align="right">0.0013220</td>
@@ -426,7 +429,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>ChunkCondition</td>
+<td>linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">0.0308763</td>
 <td align="right">0.0308763</td>
@@ -434,7 +437,7 @@
 <td align="right">0.0008279</td>
 </tr>
 <tr class="odd">
-<td>Residuals 1</td>
+<td>Residuals</td>
 <td align="right">14</td>
 <td align="right">0.0240728</td>
 <td align="right">0.0017195</td>
@@ -442,7 +445,7 @@
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td>VoiceCondition:ChunkCondition</td>
+<td>voice:linguistic_unit</td>
 <td align="right">1</td>
 <td align="right">0.0045916</td>
 <td align="right">0.0045916</td>
@@ -460,18 +463,18 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">E1B_acc_table &lt;-<span class="st"> </span>E1Bacc_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(VoiceCondition,ChunkCondition) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(voice,linguistic_unit) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mAcc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_acc),</a>
 <a class="sourceLine" id="cb7-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_acc)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_acc)))</a>
 <a class="sourceLine" id="cb7-5" title="5"></a>
 <a class="sourceLine" id="cb7-6" title="6"><span class="co">#levels(E1A_acc_table$paragraph) &lt;- c("Say Letter", "Say Word")</span></a>
 <a class="sourceLine" id="cb7-7" title="7"></a>
 <a class="sourceLine" id="cb7-8" title="8">E1B_graph_acc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1B_acc_table, </a>
-<a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>VoiceCondition,</a>
+<a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>voice,</a>
 <a class="sourceLine" id="cb7-10" title="10">                             <span class="dt">y=</span>mAcc, </a>
-<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>ChunkCondition,</a>
-<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">shape=</span>ChunkCondition,</a>
-<a class="sourceLine" id="cb7-13" title="13">                             <span class="dt">linetype=</span>ChunkCondition))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">shape=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb7-13" title="13">                             <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
 <a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
 <a class="sourceLine" id="cb7-15" title="15"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
 <a class="sourceLine" id="cb7-16" title="16">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
@@ -488,8 +491,8 @@
 <a class="sourceLine" id="cb7-27" title="27">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1B_acc_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">VoiceCondition</th>
-<th align="left">ChunkCondition</th>
+<th align="left">voice</th>
+<th align="left">linguistic_unit</th>
 <th align="right">mAcc</th>
 <th align="right">sem</th>
 </tr></thead>
@@ -534,6 +537,11 @@
 <h1 class="hasAnchor">
 <a href="#save-all" class="anchor"></a>Save all</h1>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save.image</a></span>(<span class="dt">file=</span><span class="st">"E1B_workspace.RData"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">talk_type_E1B_data &lt;-<span class="st"> </span>talk_type_E1B_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="st">                        </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">voice =</span> VoiceCondition,</a>
+<a class="sourceLine" id="cb11-3" title="3">                               <span class="dt">linguistic_unit =</span> ChunkCondition)</a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(talk_type_E1B_data, <span class="dt">file=</span><span class="st">"talk_type_E1B_data.RData"</span>)</a></code></pre></div>
 </div>
   </div>
 
