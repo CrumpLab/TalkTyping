@@ -1,0 +1,54 @@
+template:
+  params:
+    bootswatch: readable
+
+authors:
+  Matthew Crump:
+    href: https://crumplab.github.io
+
+navbar:
+  structure:
+    left:
+    - home
+    - articles
+    - pdfVersion
+    right:
+    - reference
+    - github
+  components:
+    articles:
+      text: Paper and Scripts
+      menu:
+      - text: 'Typing and Talking draft manuscript'
+        href: articles/Talk_typing_draft.html
+      - text: 'Scripts for Analysis'
+        href: 
+      - text: 'Supplemental Materials'
+        href: 
+    reference:
+      text: Data
+      href: reference/index.html
+    pdfVersion:
+      text: pdf
+      icon: fa-file
+      href: articles/Talk_typing_draft.pdf
+    github:
+      text: source code
+      icon: fa-lg fa-github
+      href: https://github.com/CrumpLab/TalkTyping
+
+home:
+  strip_header: true
+  links:
+    - text: Psyarxiv preprint
+      href: TBD
+    - text: OSF (same as github repo)
+      href: TBD
+
+#reference:
+#- title: Data
+#  desc:  Description of data files
+#  contents:
+#  - talk_type_E1A_data
+
+

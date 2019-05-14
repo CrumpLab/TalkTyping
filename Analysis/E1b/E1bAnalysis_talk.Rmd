@@ -188,6 +188,8 @@ restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
 setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1b")
 restricted_df<-read.table(file="e1bdata.txt")
 
+talk_type_E1B_data <- fread("e1bdata.txt")
+
 ```
 
 

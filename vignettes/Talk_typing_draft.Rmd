@@ -1,5 +1,5 @@
 ---
-title             : "Typing and Talking"
+title             : "Typing and Talking: draft in progress"
 shorttitle        : "Crosstalk during typing"
 
 author: 
@@ -21,7 +21,7 @@ affiliation:
 
 
 author_note: |
-  [https://github.com/CrumpLab/TalkTyping](https://github.com/CrumpLab/TalkTyping) is the github repository for this project, which was conceived and completed entirely in public. The repository contains the data, source code for compiling the analysis and modeling scripts in R, source code for compiling this paper in R using papaja, and the version controlled history of our discussions and work across the project.
+  [https://github.com/CrumpLab/TalkTyping](https://github.com/CrumpLab/TalkTyping) is the github repository for this project containing the data, and source code for compiling compiling this paper in R using papaja.
   
 abstract: |
   Enter abstract here. Each new line herein must be indented, like this line.
@@ -29,7 +29,7 @@ abstract: |
 keywords          : "Typing, Language production"
 wordcount         : "X"
 
-bibliography      : ["r-references.bib"]
+bibliography      : ["r-references.bib","TypingTalking.bib"]
 
 figsintext        : yes
 figurelist        : no
@@ -40,23 +40,34 @@ mask              : no
 
 class             : "man"
 output            : papaja::apa6_pdf
+vignette: >
+  %\VignetteIndexEntry{TalkTyping}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r load_packages, include = FALSE}
-library("papaja")
+library(papaja)
+library(TalkTyping)
+library(ggpubr)
+require(ggplot2)
+require(Crump)
+require(dplyr)
+require(knitr)
+require(xtable)
 ```
 
-```{r analysis_preferences}
+```{r analysis_preferences, echo=FALSE}
 # Seed for random number generation
 set.seed(42)
 ```
 
-Language production processes turn ideas into actions. For example, people use utterances and gestures to convey semantic meaning during conversation; to preserve ideas in different mediums, such as hand-writing, typewriting, and dictation; and to plan and guide cognition and behavior in general. In Vygotszky's () developmental tradition, children first acquire connections between actions and outcomes in the world around them with the words spoken to them by their caregivers, and then internalize the same language system as a tool to regulate their own cognition and behavior. In adulthood, people continue to talk out loud and silently to themselves using inner speech, and such self-directed language production is assumed to continue to regulate many aspects of cognition and behavior (). For example, in memory, the phonological loop transfers to-be-remembered information into long-term memory through short-term rehearsal (Baddeley & Hitch, 1974).  The act of speaking out loud itself improves future retrieval, as shown by the production effect (MacLeod et al., 2010); and, the process of naming may guide category learning by drawing attention toward diagnostic features (Lupyan,). Verbal recoding can facilitate learning and recall of lengthy sequences by casting elements into chunks with recallable names (Miller, 1956). In the completion of everyday tasks, Botvinick and Plaut (2004) argue that verbally coded instructions together with recurrent associative learning of real-world action sequences provide the control necessary for accomplishing routine tasks like making coffee or tea. Among these and other uses, a crowning achievement of language production is the ability to control the serial order of utterances to convey meaning in highly complex and flexible ways. In the present work, we are interested how the verbal process of language production for speech may or may not be recruited to facilitate manual control of fingers for sequencing keystrokes during typewriting. In particular, we investigate the general idea that the sequence production processes enabling fluent typing are controlled by common word level linguistic codes used during speech.
+Language production processes turn ideas into actions. For example, people use utterances and gestures to convey semantic meaning during conversation; to preserve ideas in different mediums, such as hand-writing, typewriting, and dictation; and to plan and guide cognition and behavior in general. In Vygotszky's () developmental tradition, children first acquire connections between actions and outcomes in the world around them with the words spoken to them by their caregivers, and then internalize the same language system as a tool to regulate their own cognition and behavior. In adulthood, people continue to talk out loud and silently to themselves using inner speech, and such self-directed language production is assumed to continue to regulate many aspects of cognition and behavior (). For example, in memory, the phonological loop transfers to-be-remembered information into long-term memory through short-term rehearsal [@BaddeleyWorkingmemory1974].  The act of speaking out loud itself improves future retrieval, as shown by the production effect [@MacLeodproductioneffectDelineation2010]; and, the process of naming may guide category learning by drawing attention toward diagnostic features (Lupyan,). Verbal recoding can facilitate learning and recall of lengthy sequences by casting elements into chunks with recallable names [@Millermagicalnumberseven1956]. In the completion of everyday tasks, @BotvinickDoingschemahierarchies2004 argue that verbally coded instructions together with recurrent associative learning of real-world action sequences provide the control necessary for accomplishing routine tasks like making coffee or tea. Among these and other uses, a crowning achievement of language production is the ability to control the serial order of utterances to convey meaning in highly complex and flexible ways. In the present work, we are interested how the verbal process of language production for speech may or may not be recruited to facilitate manual control of fingers for sequencing keystrokes during typewriting. In particular, we investigate the general idea that the sequence production processes enabling fluent typing are controlled by common word level linguistic codes used during speech.
 
-We review three perspectives from the typing, language production, and sequence production literatures that all suggest an important role for verbal codes to mediate keystroke production in typing. Typing is assumed to be controlled by hierarchically nested control loops (). The outer loop relies on language comprehension and production to turn ideas into words and sentences. Word level-representation are then sent as goals to an inner loop that controls individual finger movements to individual keystrokes for each letter in a word. The two loops are informationally encapsulated modules (), and the outer loop does not know the details of how the inner loop accomplishes keystrokes (). However, the two loops must nevertheless be coordinated to accomplish accurate typing, presumably by intermediate word-level representations. For example, in Rumelhart & Norman's (1982) typing model, words cause parallel activation of letter units in a response scheduling buffer, which then controls individual keystrokes for all letters in the word. That model focused on copy-typing, and assumed that word representations are activated by word-recognition processes operating during reading of to-be-copied text. In composition typing, word representations could be activated by overt or covert language production processes, and their activation would presumably have the same consequence of activating constituent letters for typing.
+We review three perspectives from the typing, language production, and sequence production literatures that all suggest an important role for verbal codes to mediate keystroke production in typing. Typing is assumed to be controlled by hierarchically nested control loops [@LoganHierarchicalcontrolcognitive2011]. The outer loop relies on language comprehension and production to turn ideas into words and sentences. Word level-representation are then sent as goals to an inner loop that controls individual finger movements to individual keystrokes for each letter in a word. The two loops are informationally encapsulated modules [@Fodormodularitymindessay1983], and the outer loop does not know the details of how the inner loop accomplishes keystrokes [@Loganlefthanddoesn2009a;@Liuyouknowwhere2010]. However, the two loops must nevertheless be coordinated to accomplish accurate typing, presumably by intermediate word-level representations. For example, in @RumelhartSimulatingskilledtypist1982 typing model, words cause parallel activation of letter units in a response scheduling buffer, which then controls individual keystrokes for all letters in the word. That model focused on copy-typing, and assumed that word representations are activated by word-recognition processes operating during reading of to-be-copied text. In composition typing, word representations could be activated by overt or covert language production processes, and their activation would presumably have the same consequence of activating constituent letters for typing.
 	
 People are capable of overt and covert speech, which may be mediated by a common language production process. For example, according to the flexible abstraction hypothesis (), the selection of individual phonemes during covert or overt speech is controlled by a common process with relatively abstract phonemic codes. These abstract codes retain deep semantic and lexical features, but lack many of the articulatory features necessary for speaking out loud. As a result, inner speech may rely on these more abstract codes, which explains evidence that errors in overt speech can be driven more by lexical than phonemic similarity (). At the same time, these abstract codes can be used flexibly and further modified by articulatory processes that fill in necessary additional features to achieve overt speech. Although the flexible abstraction hypothesis is concerned mainly with speech overt and covert speech production, it is worth considering whether it extends to nonverbal language production such as typing. For example, the same abstract verbal codes mediating inner speech may be co-opted and further specified by motor processes controlling finger movements to achieve accurate and fluid keystroke production.
-Sequence production more generally may also be mediated by verbal codes that trigger a plan-based mode of action control distinct from a more automatic stimulus-based mode of control (). For example, a stimulus-based mode of control refers to actions triggered in an automatic, reflex-like manner in response to well-learned cues from the environment. Whereas, a plan-based mode of control refers to goal-driven cognitive processes that set and supervise motor programs for complex sequencing of actions. Evidence for a distinction between control modes comes from the serial reaction time task (SRT, Nissen & Bullemer, 1987). The major finding from SRT tasks is that subjects learn to respond faster to targets that are presented in repeating or probabilistic sequences compared to random sequences, even if they are unable to explicitly describe the sequential regularities. At the same time, whether reaction times are sensitive to the frequency of particular targets or first-order transitions (e.g., repetitions or alternations) appears to depend on whether subjects possess explicit knowledge about sequential regularities in the task. For example, in a task where alternations were three times more likely than repetitions, subjects who were not aware of the manipulation showed faster responses to the more frequent alternations than repetitions, whereas subjects who were aware of the manipulation were equally fast for alternations and repetitions. One interpretation is that explicit knowledge of the transition probabilities allowed subjects to adopt a control-based mode, enabling action plans to mediate responses rather than more automatic frequency sensitive learning processes. Using a similar task, Tubau, Hommel, & López-Moliner (2007) further showed that subjects were more likely to adopt a plan-based mode (as evidenced by the elimination of the alternation benefit) when visual/verbal targets were used and when responses where followed by sounds, and plan-based control was disrupted when auditory noise was introduced. They suggested that use of phonemic codes in general may strongly influence subjects to adopt a plan-based vs. stimulus-based mode of action control.
+Sequence production more generally may also be mediated by verbal codes that trigger a plan-based mode of action control distinct from a more automatic stimulus-based mode of control (). For example, a stimulus-based mode of control refers to actions triggered in an automatic, reflex-like manner in response to well-learned cues from the environment. Whereas, a plan-based mode of control refers to goal-driven cognitive processes that set and supervise motor programs for complex sequencing of actions. Evidence for a distinction between control modes comes from the serial reaction time task [SRT, @NissenAttentionalrequirementslearning1987]. The major finding from SRT tasks is that subjects learn to respond faster to targets that are presented in repeating or probabilistic sequences compared to random sequences, even if they are unable to explicitly describe the sequential regularities. At the same time, whether reaction times are sensitive to the frequency of particular targets or first-order transitions (e.g., repetitions or alternations) appears to depend on whether subjects possess explicit knowledge about sequential regularities in the task. For example, in a task where alternations were three times more likely than repetitions, subjects who were not aware of the manipulation showed faster responses to the more frequent alternations than repetitions, whereas subjects who were aware of the manipulation were equally fast for alternations and repetitions. One interpretation is that explicit knowledge of the transition probabilities allowed subjects to adopt a control-based mode, enabling action plans to mediate responses rather than more automatic frequency sensitive learning processes. Using a similar task, Tubau, Hommel, & López-Moliner (2007) further showed that subjects were more likely to adopt a plan-based mode (as evidenced by the elimination of the alternation benefit) when visual/verbal targets were used and when responses where followed by sounds, and plan-based control was disrupted when auditory noise was introduced. They suggested that use of phonemic codes in general may strongly influence subjects to adopt a plan-based vs. stimulus-based mode of action control.
 
 Several lines of evidence suggest that verbal codes for speech production participate in manual control over keystrokes during typing. Typing speed is fastest for words and decreases as letter strings approach random texts (). This effect of string structure could simply reflect familiarity and prior experience with typing words compared to random letter sequences, but could also be driven by string pronounceability. For example, typing speed is also influenced by syllabic structure, with faster interkeystroke times for letters within versus between syllables in a word. Word-level representations may also have a special status in activating all constituent letters in parallel compared to non-words which do not activate all letters in a sequence (). Finally, lexical structure at the level of bigrams appears to influence the spatial precision with which typists locate keys during typing (). This evidence is consistent with the idea that typists use verbal codes in a straightforward manner during typing, by concurrently using their inner voice (and perhaps sometimes speaking out loud) to say the same words they are typing.
 
@@ -92,18 +103,76 @@ For experiment 1a, the instructions read: This experiment tests how you your inn
 
 For experiment 1b, in the speak aloud condition, the instructions read: When you type this paragraph, speak aloud each word (or letter in the letter condition) that you type. In the inner voice condition, the instructions were identical to experiment 1a. At the beginning of the experiment, subjects were given a short questionnaire about how they use their inner voice during typing. The questionnaire stated "People have the ability to use their inner voice to speak silently to themselves. We are interested in how you use your inner voice while you are typing. Please estimate the percentage of times that your inner voice is engaged in each of the following tasks while typing, and make sure your numbers add up to 100.". The four tasks were: a) inner voice is silent, b) inner voice speaks words that you are typing, c) inner voice speaks letters that you are typing, d) inner voice speaks other words or letters that you are not typing.
 
-### Data analysis and pre-processing
-We used `r cite_r("r-references.bib")` for all our analyses.
-
-For each subject, we applied the following pre-processing steps. We included IKSIs only for keystrokes involving a lower case letter, and only for correct keystrokes that were preceded by a correct keystroke. Outlier IKSIs were removed for each subject, on a cell-by-cell basis, using the @van_selst_solution_1994 non-recursive moving criterion procedure, which eliminated approximately X% of IKSIs from further analysis.
-
 ## Results
+
+```{r E1Ab, echo=FALSE, eval=FALSE}
+#load E1A data
+E1_data <- talk_type_E1A_data
+
+# IKSI analysis
+
+E1_data <- E1_data %>%
+            mutate(subject = as.factor(subject)) %>%
+            filter(errors == 1,
+                   iksis < 5000) %>%
+            group_by(subject,paragraph) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+                  
+E1_aov_out <- aov(mean_iksi ~ paragraph + Error(subject/paragraph), E1_data)
+E1_apa_print <- apa_print(E1_aov_out)
+E1_means <- model.tables(E1_aov_out,"means")
+
+# Accuracy
+
+E1acc_data <- talk_type_E1A_data
+
+E1acc_data <- E1acc_data %>%
+            mutate(subject = as.factor(subject)) %>%
+            group_by(subject,paragraph) %>%
+            summarise(mean_acc = mean(errors))
+                  
+E1acc_aov_out <- aov(mean_acc ~ paragraph + Error(subject/paragraph), E1acc_data)
+E1acc_apa_print <- apa_print(E1acc_aov_out)
+E1acc_means <- model.tables(E1acc_aov_out,"means")
+
+E1A_dmg <- talk_type_E1A_dmg
+proportion_word <- E1A_dmg %>%
+                    group_by(InnerVoice) %>%
+                    summarize(p_word = length(InnerVoice)/dim(E1A_dmg)[1])
+
+inner_voice_props<-c(
+  round(proportion_word[proportion_word$InnerVoice=="Words",]$p_word, digits=2),
+round(proportion_word[proportion_word$InnerVoice=="Letters",]$p_word,digits=2),
+round(proportion_word[proportion_word$InnerVoice=="undefined",]$p_word,digits=2))
+
+
+```
+
+```{r E1A, echo=FALSE}
+load("E1A_workspace.RData")
+```
+
+
+For each subject, we applied the following pre-processing steps. We included IKSIs only for keystrokes involving a lower case letter, and only for correct keystrokes that were preceded by a correct keystroke. Outlier IKSIs were removed for each subject, on a cell-by-cell basis, using the @van1994solution non-recursive moving criterion procedure, which eliminated approximately `r round(mean(E1_data$prop_removed), digits=2)` of IKSIs from further analysis. An alpha criterion of .05 was set for all analyses.
 
 ### Experiment 1a
 
-Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a one-way repeated measures ANOVA with inner voice task condition (words vs. letters) as the sole factor. Mean IKSIs in the word condition (174 ms) were significantly faster than the letter condition (224 ms), F(1, 39)  = 33.39 , MSE = 1474.36 , p < .001. A corresponding analysis of error rates showed no significant differences between word (.04) and letter (.05) conditions, F<1.
+Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Inner Voice: Say Letters vs. Say Words) x 2 (Letter position: First letter vs. Middle Letter) repeated measures ANOVA. Mean IKSIs are displayed in Figure \@ref(fig:E1Figure).
 
-Additionally, subjects were asked if their inner voice usually thinks in words or letters when they type, and 93% of subject reported thinking in words during typing.
+```{r E1Figure, echo=FALSE, fig.width=6, fig.height=3, fig.cap="Mean interkeystroke intervals (IKSIs in ms) and mean accuracy as a function of inner voice condition (Say Word vs. Say Letter), and letter position in word (first letter vs. middle letter). Middle letters were any remaining letter in the word."}
+ggarrange(E1A_graph_iksi,E1A_graph_acc)
+```
+
+The main effect of inner voice condition was significant, `r E1_apa_print$full_result$paragraph`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$paragraph["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$paragraph["say_letter"], digits=0)`) they were typing.
+
+The main effect of letter position was significant, `r E1_apa_print$full_result$LetterType`. Mean IKSIs were longer for letters in the first position (`r printnum(E1_means$tables$LetterType["First"], digits=0)`), compared to letters in the other positions (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)`).
+
+The interaction between inner voice and letter position did not meet the significance criterion, `r E1_apa_print$full_result$paragraph_LetterType`.
+
+A corresponding 2x2 repeated measures ANOVA was conducted on the mean accuracies for typing letters in each condition. Mean accuracies are shown in Figure \@ref(fig:E1Figure). Accuracy was uniformly high in all conditions, and there were no main effects or interaction.
+
+Last, prior to the experiments subjects were asked if their inner voice usually thinks in words or letters when they type. The proportions of subjects reporting thinking in words, letters, or who did not answer were `r paste(inner_voice_props, collapse=", ")`, respectively.
 
 ### Experiment 1b
 

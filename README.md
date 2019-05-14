@@ -1,14 +1,12 @@
-# EntropyTyping
+## Talking while typing (title in progress)
 
-## PUBLIC DRAFT IN PROGRESS
-(Everything subject to change, all changes recorded by git)
+**Authors:** Matthew J. C. Crump, Nicholaus Brosowsky, Lawrence Behmer
 
-A repository for collaborating on our new manuscript investigating how keystroke production is influenced by verbal language during typing.
+**Abstract:** In progress
 
-The record of how we complete our project will be saved in the changelog for this repo. After we are done, this repo should contain
+## About
 
-1. A pre-print of our manuscript (written using papaja in R) [https://github.com/CrumpLab/TalkTyping/blob/master/Talk_typing_draft.pdf](https://github.com/CrumpLab/TalkTyping/blob/master/Talk_typing_draft.pdf)
-2. Databases used for the analyses
-3. R-scripts used for the analyses
-4. [A record of our conversations about the project in the issues tab](https://github.com/CrumpLab/TalkTyping/issues). 
+This work should be fully reproducible by compiling the source code for this project. The source code is available in the following github repository [https://github.com/CrumpLab/TalkTyping/](https://github.com/CrumpLab/TalkTyping/)
+
+The repository files contain both the source code for this website, which was compiled using `pkgdown`, and the source code for the paper which was written using `papaja`. The code, data, and scripts for the paper are located in the `vignettes` folder. 
 

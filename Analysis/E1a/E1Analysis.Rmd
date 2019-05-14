@@ -20,9 +20,37 @@ require(knitr)
 require(xtable)
 ```
 
+# get demographics
+
+```{r}
+a<-fread("external_hit.results")
+
+talk_type_E1A_dmg <- fread("e1a_dmg.csv")
+
+talk_type_E1A_dmg <- data.frame()
+for(sub in 1:48){
+  data<-unlist(strsplit(a[sub,]$Answer.RTs,split=":"))
+  
+  if(length(data)==9){
+    t_df <- c(sub,unlist(strsplit(data[1],split=",")))
+    c_names <- c("Subject","Country","Gender","Age","Handedness","Vision","English","NumberYearsTyping","AgeStartedTyping","FormalTraining","TouchTypist","InnerVoice")
+    names(t_df) <- c_names
+    t_df <- data.frame(t(t_df))
+    talk_type_E1A_dmg <- rbind(talk_type_E1A_dmg,t_df)
+  }
+}
+
+library(dplyr)
+talk_type_E1A_dmg <- talk_type_E1A_dmg %>%
+  filter(Subject %in% unique(talk_type_E1A_data$subject) == TRUE)
+```
+
+
 # read in turk data
 
 ```{r,eval=FALSE}
+a<-fread("external_hit.results")
+
 setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
 
 AllWPM<-matrix(0,ncol=2,nrow=48)
@@ -106,6 +134,11 @@ restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
 ```{r}
 setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
 restricted_df<-read.table(file="e1dataA.txt")
+
+talk_type_E1A_data <- read.table(file="e1dataA.txt")
+talk_type_E1A_data$paragraph <- as.factor(talk_type_E1A_data$paragraph)
+levels(talk_type_E1A_data$paragraph) <- c("say_letter","say_word")
+save(talk_type_E1A_data,file="talk_type_E1A_data.RData")
 
 #IKSI analysis
 restricted_rts<-restricted_df[restricted_df$errors==1,]

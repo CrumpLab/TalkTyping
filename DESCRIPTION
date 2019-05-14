@@ -1,0 +1,11 @@
+Package: TalkTyping
+Type: Package
+Title: Typing while talking
+Version: 0.9.0
+Authors@R: person("Matthew", "Crump", role = c("aut", "cre"), email = "mcrump@brooklyn.cuny.edu")
+Maintainer: The package maintainer <mcrump@brooklyn.cuny.edu>
+Description: This project investigates the role of verbal codes in typing production
+License: TBD
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1

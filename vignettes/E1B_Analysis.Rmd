@@ -1,0 +1,160 @@
+---
+title: "E1B_Analysis"
+author: "Matt"
+date: "5/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+# Load Libraries
+
+```{r}
+library(papaja)
+library(TalkTyping)
+library(dplyr)
+library(Crump)
+library(xtable)
+library(ggplot2)
+library(ggpubr)
+```
+
+# E1B IKSI Analysis
+
+```{r}
+#load E1B data
+E1B_data <- talk_type_E1B_data
+
+# IKSI analysis
+
+E1B_data <- E1B_data %>%
+            mutate(subject = as.factor(subject),
+                   VoiceCondition = as.factor(VoiceCondition),
+                   ChunkCondition = as.factor(ChunkCondition),
+                   LetterType = as.factor(LetterType)) %>%
+            filter(accuracy == 1,
+                   iksis < 5000,
+                   LetterType != "Space") %>%
+            group_by(subject,VoiceCondition,ChunkCondition,LetterType) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+                  
+E1B_aov_out <- aov(mean_iksi ~ VoiceCondition*ChunkCondition*LetterType + 
+                    Error(subject/(VoiceCondition*ChunkCondition*LetterType)), E1B_data)
+
+knitr::kable(xtable(summary(E1B_aov_out)))
+
+E1B_apa_print <- apa_print(E1B_aov_out)
+E1B_means <- model.tables(E1B_aov_out,"means")
+
+```
+
+```{r, fig.width=3, fig.height=3}
+E1B_iksi_table <- E1B_data %>%
+              group_by(VoiceCondition,ChunkCondition,LetterType) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_graph_iksi <- ggplot(E1B_iksi_table, aes(x=LetterType,
+                                             y=mIKSI,
+                                             group=ChunkCondition,
+                                             shape=ChunkCondition,
+                                             linetype=ChunkCondition))+
+  geom_line()+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid")+
+  geom_point(size=2.5)+
+  geom_point(size=1.5, color="white")+
+  theme_classic(base_size=12)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  ylab("Mean IKSI (ms)")+
+  xlab("Letter position")+
+  facet_wrap(~VoiceCondition)
+
+knitr::kable(E1B_iksi_table)
+E1B_graph_iksi
+
+```
+
+## accuracy
+
+```{r}
+
+# Accuracy
+
+E1Bacc_data <- talk_type_E1B_data
+
+
+E1Bacc_data <- E1Bacc_data %>%
+                mutate(subject = as.factor(subject),
+                       VoiceCondition = as.factor(VoiceCondition),
+                       ChunkCondition = as.factor(ChunkCondition),
+                       LetterType = as.factor(LetterType)) %>%
+                filter(LetterType != "Space",
+                       LetterPosition == 1) %>%
+                group_by(subject,VoiceCondition,ChunkCondition) %>%
+                summarise(mean_acc = mean(accuracy))
+                  
+E1Bacc_aov_out <- aov(mean_acc ~ VoiceCondition*ChunkCondition + Error(subject/(VoiceCondition*ChunkCondition)), E1Bacc_data)
+
+E1Bacc_apa_print <- apa_print(E1Bacc_aov_out)
+E1Bacc_means <- model.tables(E1Bacc_aov_out,"means")
+
+knitr::kable(xtable(summary(E1Bacc_aov_out)))
+
+```
+
+```{r, fig.width=3, fig.height=3}
+E1B_acc_table <- E1Bacc_data %>%
+              group_by(VoiceCondition,ChunkCondition) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc)))
+
+#levels(E1A_acc_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_graph_acc <- ggplot(E1B_acc_table, 
+                         aes(x=VoiceCondition,
+                             y=mAcc, 
+                             group=ChunkCondition,
+                             shape=ChunkCondition,
+                             linetype=ChunkCondition))+
+  geom_line()+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid")+
+  geom_point(size=2.5)+
+  geom_point(size=1.5, color="white")+
+  theme_classic(base_size=12)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  ylab("Mean Word Accuracy")+
+  xlab("Instruction")+
+  coord_cartesian(ylim=c(.8,1))
+
+knitr::kable(E1B_acc_table)
+E1B_graph_acc
+```
+
+# Figure 1
+
+```{r}
+ggarrange(E1B_graph_iksi,E1B_graph_acc)
+
+```
+
+
+
+# Save all
+
+```{r}
+save.image(file="E1B_workspace.RData")
+```
+
