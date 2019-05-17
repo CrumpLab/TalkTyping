@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   E1A_Analysis: E1A_Analysis.html
   E1B_Analysis: E1B_Analysis.html
+  E2_Analysis: E2_Analysis.html
   Talk_typing_draft: Talk_typing_draft.html
 

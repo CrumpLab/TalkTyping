@@ -1,0 +1,203 @@
+---
+title: "Analysis | E2: Verbal Suppression"
+author: "Matt"
+date: "5/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+# Load Libraries
+
+```{r}
+library(papaja)
+library(TalkTyping)
+library(dplyr)
+library(Crump)
+library(xtable)
+library(ggplot2)
+library(ggpubr)
+library(forcats)
+```
+
+# E1B IKSI Analysis
+
+```{r}
+#load E1B data
+E2_data <- talk_type_E2_data
+
+# IKSI analysis
+
+E2_data <- E2_data %>%
+           filter(accuracy == 1,
+                           iksis < 5000,
+                           LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   suppression = as.factor(suppression),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,suppression,LetterType) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+                  
+E2_aov_out <- aov(mean_iksi ~ suppression*LetterType + 
+                    Error(subject/(suppression*LetterType)), E2_data)
+
+knitr::kable(xtable(summary(E2_aov_out)))
+
+E2_apa_print <- apa_print(E2_aov_out)
+E2_means <- model.tables(E2_aov_out,"means")
+
+```
+
+```{r, fig.width=6, fig.height=3}
+E2_data$suppression <- fct_relevel(E2_data$suppression,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E2_iksi_table <- E2_data %>%
+              group_by(suppression,LetterType) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E2_graph_iksi <- ggplot(E2_iksi_table, aes(x=LetterType,
+                                             y=mIKSI,
+                                           fill=LetterType))+
+  geom_bar(stat="identity",position="dodge")+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid")+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=12)+
+  theme(legend.position = "none",
+        legend.title = element_blank())+
+  ylab("Mean IKSI (ms)")+
+  xlab("Letter position")+
+  facet_wrap(~suppression, nrow=1)
+
+knitr::kable(E2_iksi_table)
+E2_graph_iksi
+
+```
+
+## accuracy
+
+## get letter level accuracy estimates
+
+This chunk was previously evaluated, and the `talk_type_e2_data.RData` file was updated with estimates of letter level accuracy.
+
+```{r, eval=FALSE}
+
+E2acc_data <- talk_type_E2_data
+
+E2acc_data$closest[is.na(E2acc_data$closest)] <- ""
+
+letter_accuracy <- E2acc_data$accuracy
+for(i in 1:dim(E2acc_data)[1]){
+  clet <- as.character(E2acc_data[i,]$letters)
+  cword <- unlist(strsplit(as.character(E2acc_data[i,]$closest),split=""))
+  if(E2acc_data$accuracy[i] == 0){
+    if(length(cword)>0){
+      if(E2acc_data[i,]$LetterPosition <= length(cword)){
+        if(clet != " "){
+          if(clet == cword[E2acc_data[i,]$LetterPosition]){
+            letter_accuracy[i] <- 1
+          } else {
+            letter_accuracy[i] <- 0
+          }
+        }
+      }
+    }
+  }
+}
+
+E2acc_data <- cbind(E2acc_data,letter_accuracy)
+```
+
+## Accuracy ANOVA
+
+```{r}
+E2acc_data <- talk_type_E2_data
+
+# Accuracy
+
+E2acc_data <- E2acc_data %>%
+                mutate(subject = as.factor(subject),
+                       suppression = as.factor(suppression),
+                       LetterType = as.factor(LetterType)) %>%
+                filter(LetterType != "Space") %>%
+                group_by(subject,suppression, LetterType) %>%
+                summarise(mean_acc = mean(letter_accuracy))
+                  
+E2acc_aov_out <- aov(mean_acc ~ suppression*LetterType + Error(subject/(suppression*LetterType)), E2acc_data)
+
+E2acc_apa_print <- apa_print(E2acc_aov_out)
+E2acc_means <- model.tables(E2acc_aov_out,"means")
+
+knitr::kable(xtable(summary(E2acc_aov_out)))
+
+```
+
+## Accuracy table and plots
+
+
+```{r, fig.width=6, fig.height=3}
+
+E2acc_data$suppression <- fct_relevel(E2acc_data$suppression,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E2_acc_table <- E2acc_data %>%
+              group_by(suppression,LetterType) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc)))
+
+#levels(E1A_acc_table$paragraph) <- c("Say Letter", "Say Word")
+
+E2_graph_acc <- ggplot(E2_acc_table, aes(x=LetterType,
+                                             y=mAcc,
+                                           fill=LetterType))+
+  geom_bar(stat="identity",position="dodge")+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid")+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=12)+
+  theme(legend.position = "none",
+        legend.title = element_blank())+
+  ylab("Mean Accuracy")+
+  xlab("Letter position")+
+  coord_cartesian(ylim=c(.7,1))+
+  facet_wrap(~suppression, nrow=1)
+
+knitr::kable(E2_acc_table)
+E2_graph_acc
+```
+
+# Figure 1
+
+```{r, eval=T, fig.width=6, fig.height=6}
+ggarrange(E2_graph_iksi,E2_graph_acc, nrow=2)
+
+```
+
+
+
+# Save all
+
+```{r, eval=T}
+save.image(file="E2_workspace.RData")
+```
+
+
+```{r, eval=FALSE}
+talk_type_E1B_data <- talk_type_E1B_data %>%
+                        rename(voice = VoiceCondition,
+                               linguistic_unit = ChunkCondition)
+
+save(talk_type_E1B_data, file="talk_type_E1B_data.RData")
+```
+

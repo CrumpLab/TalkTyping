@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E1A_Analysis • TalkTyping</title>
+<title>Analysis | E1A: Inner Speech Talk and Type • TalkTyping</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="E1A_Analysis">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Analysis | E1A: Inner Speech Talk and Type">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -50,10 +50,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/E1A_Analysis.html">E1A_Analysis</a>
+      <a href="../articles/E1A_Analysis.html">Analysis | E1A: Inner Speech Talk and Type</a>
     </li>
     <li>
-      <a href="../articles/E1B_Analysis.html">E1B_Analysis</a>
+      <a href="../articles/E1B_Analysis.html">Analysis | E1B: Talk and Type</a>
+    </li>
+    <li>
+      <a href="../articles/E2_Analysis.html">Analysis | E2: Verbal Suppression</a>
     </li>
     <li>
       <a href="../articles/Talk_typing_draft.html">Typing and Talking: draft in progress</a>
@@ -94,7 +97,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>E1A_Analysis</h1>
+      <h1>Analysis | E1A: Inner Speech Talk and Type</h1>
                         <h4 class="author">Matt</h4>
             
             <h4 class="date">5/14/2019</h4>
@@ -215,22 +218,23 @@
 <a class="sourceLine" id="cb4-5" title="5"></a>
 <a class="sourceLine" id="cb4-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_iksi_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
 <a class="sourceLine" id="cb4-7" title="7"></a>
-<a class="sourceLine" id="cb4-8" title="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,<span class="dt">y=</span>mIKSI, <span class="dt">group=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb4-9" title="9">                         <span class="dt">shape=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb4-10" title="10">                      <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
-<a class="sourceLine" id="cb4-13" title="13">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb4-14" title="14">                <span class="dt">linetype=</span><span class="st">"solid"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">size=</span><span class="fl">2.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">size=</span><span class="fl">1.5</span>, <span class="dt">color=</span><span class="st">"white"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-17" title="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
-<a class="sourceLine" id="cb4-19" title="19">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Letter position"</span>)</a>
-<a class="sourceLine" id="cb4-22" title="22"></a>
-<a class="sourceLine" id="cb4-23" title="23">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_iksi_table)</a></code></pre></div>
+<a class="sourceLine" id="cb4-8" title="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-9" title="9">                                             <span class="dt">y=</span>mIKSI, </a>
+<a class="sourceLine" id="cb4-10" title="10">                                             <span class="dt">group=</span>LetterType,</a>
+<a class="sourceLine" id="cb4-11" title="11">                                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
+<a class="sourceLine" id="cb4-14" title="14">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb4-15" title="15">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb4-17" title="17">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
+<a class="sourceLine" id="cb4-20" title="20">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Letter position"</span>)</a>
+<a class="sourceLine" id="cb4-23" title="23"></a>
+<a class="sourceLine" id="cb4-24" title="24">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_iksi_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">linguistic_unit</th>
@@ -363,25 +367,24 @@
 <a class="sourceLine" id="cb7-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_acc_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
 <a class="sourceLine" id="cb7-7" title="7"></a>
 <a class="sourceLine" id="cb7-8" title="8">E1A_graph_acc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_acc_table, </a>
-<a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>LetterType,</a>
+<a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
 <a class="sourceLine" id="cb7-10" title="10">                             <span class="dt">y=</span>mAcc, </a>
-<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">shape=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb7-13" title="13">                             <span class="dt">linetype=</span>linguistic_unit))<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
-<a class="sourceLine" id="cb7-16" title="16">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb7-17" title="17">                <span class="dt">linetype=</span><span class="st">"solid"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-18" title="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">size=</span><span class="fl">2.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">size=</span><span class="fl">1.5</span>, <span class="dt">color=</span><span class="st">"white"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
-<a class="sourceLine" id="cb7-22" title="22">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean Accuracy"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Letter position"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">ylim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">8</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb7-26" title="26"></a>
-<a class="sourceLine" id="cb7-27" title="27">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_acc_table)</a></code></pre></div>
+<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>LetterType,</a>
+<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
+<a class="sourceLine" id="cb7-15" title="15">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb7-16" title="16">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb7-18" title="18">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-20" title="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
+<a class="sourceLine" id="cb7-21" title="21">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean Accuracy"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Letter position"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">ylim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">8</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb7-25" title="25"></a>
+<a class="sourceLine" id="cb7-26" title="26">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_acc_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">linguistic_unit</th>
