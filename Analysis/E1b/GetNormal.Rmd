@@ -1,0 +1,164 @@
+---
+title: "Get Normal"
+author: "Matt"
+date: "5/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stringdist)
+
+#keytimes is a vector of IKSIs
+#keypresses is a vector of responses
+#dict is a vector of words, used to check errors
+continuousTyping<-function (keytimes,keypresses,dict){
+  #create words
+  words<-vector(mode="character",length=length(keytimes))
+  buildword<-c()
+  for(ii in 1:length(keypresses)){
+    if(keypresses[ii]!=" "){
+    buildword<-c(buildword,keypresses[ii])  
+    }else{
+      words[(ii-(length(buildword)+1)):ii]<-paste(buildword,collapse="")
+      buildword<-c()
+    }
+  }
+  words[(ii-(length(buildword)+1)):ii]<-paste(buildword,collapse="")
+  buildword<-c()
+  
+  #find closest matches
+  closest<-vector(mode="character",length=length(keytimes))
+  accuracy<-vector(mode="integer",length=length(keytimes))
+  distance<-vector(mode="integer",length=length(keytimes))
+  propCorrect<-vector(mode="integer",length=length(keytimes))
+  for (m in 1:length(words)){
+    if(tolower(words[m])%in%tolower(paragraph)==TRUE){
+      accuracy[m]<-1
+      closest[m]<-words[m]
+      distance[m]<-0
+    }else{
+      accuracy[m]<-0
+      closest[m]<-dict[amatch(words[m],paragraph,maxDist=6)] 
+      distance[m]<-stringdist(words[m],closest[m])
+    }
+    propCorrect[m]<-abs(distance[m]-length(unlist(strsplit(closest[m],split=""))))/length(unlist(strsplit(closest[m],split="")))
+  }
+  
+  makedf<-data.frame(iksis=keytimes,
+                     letters=keypresses,
+                     words,
+                     closest,
+                     accuracy,
+                     distance,
+                     propCorrect)
+  
+  return(makedf)
+  
+}
+```
+
+
+
+```{r}
+fnames <- list.files("./d/")
+fnames<-fnames[fnames!="p4c4.txt"]
+alldf<-data.frame()
+
+#paste(".d/",f, sep="")
+
+for(f in fnames){
+  test<-scan(file=paste("d/",f, sep=""), what="character", sep= "\n")
+  subnum=f
+  
+  for(i in 0){
+    #i=0
+    temp<-unlist(strsplit(test[1+i*3],split="\t"))
+    condition<-temp[1]
+    paragraph<-as.character(unlist(strsplit(temp[4],split=" ")))
+    temp<-unlist(strsplit(test[2+i*3],split="\t"))
+    responses<-as.character(unlist(strsplit(temp[4],split="")))
+    responses<-responses[2:length(responses)]
+    word_responses<-as.character(unlist(strsplit(temp[4],split=" ")))
+    temp<-unlist(strsplit(test[3+i*3],split="\t"))
+    iksis<-as.numeric(unlist(strsplit(temp[4],split=",")))
+    iksis<-iksis[2:length(iksis)]-iksis[1:length(iksis)-1]
+    
+    word_df<-continuousTyping(iksis,responses,paragraph)
+    word_df<-cbind(word_df,suppression=rep(condition,dim(word_df)[1]))
+    word_df<-cbind(word_df,subject=rep(subnum,dim(word_df)[1]))
+    alldf<-rbind(alldf,word_df)
+  }
+}
+
+voice <- alldf$suppression
+linguistic_unit <- alldf$suppression
+
+alldf<-cbind(alldf,voice,linguistic_unit)
+
+restricted_df<-alldf
+
+# Add letter position
+#get order variable to sort for letter position
+LetterPosition<-c()
+LetterType<-c()
+lp<-0
+for(i in 1:dim(restricted_df)[1]){
+  if(restricted_df[i,2]!=" "){
+    lp<-lp+1
+  } else {
+    lp<-0
+  }
+  LetterPosition<-c(LetterPosition,lp)
+  if(lp==1){
+    LetterType<-c(LetterType,"First")
+  } else if (lp==0){
+    LetterType<-c(LetterType,"Space")
+  }else{
+    LetterType<-c(LetterType,"Middle")
+  }
+    
+}
+restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
+
+## add letter level accuracy
+
+
+restricted_df$closest[is.na(restricted_df$closest)] <- ""
+
+letter_accuracy <- restricted_df$accuracy
+for(i in 1:dim(restricted_df)[1]){
+  clet <- as.character(restricted_df[i,]$letters)
+  cword <- unlist(strsplit(as.character(restricted_df[i,]$closest),split=""))
+  if(restricted_df$accuracy[i] == 0){
+    if(length(cword)>0){
+      if(restricted_df[i,]$LetterPosition <= length(cword)){
+        if(clet != " "){
+          if(clet == cword[restricted_df[i,]$LetterPosition]){
+            letter_accuracy[i] <- 1
+          } else {
+            letter_accuracy[i] <- 0
+          }
+        }
+      }
+    }
+  }
+}
+
+restricted_df <- cbind(restricted_df,letter_accuracy)
+
+```
+
+
+```{r}
+
+talk_type_E1B_data <- talk_type_E1B_data[,-1]
+
+talk_type_E1B_data <- rbind(talk_type_E1B_data,restricted_df)
+
+
+```
+

@@ -34,7 +34,9 @@ E1B_data <- talk_type_E1B_data
 E1B_data <- E1B_data %>%
            filter(accuracy == 1,
                            iksis < 5000,
-                           LetterType != "Space") %>%
+                           LetterType != "Space",
+                           voice != "Normal",
+                           linguistic_unit != "Normal") %>%
             mutate(subject = as.factor(subject),
                    voice = as.factor(voice),
                    linguistic_unit = as.factor(linguistic_unit),
@@ -127,11 +129,14 @@ E1Bacc_data <- talk_type_E1B_data
 
 
 E1Bacc_data <- E1Bacc_data %>%
+                filter(iksis < 5000,
+                       LetterType != "Space",
+                       voice != "Normal",
+                       linguistic_unit != "Normal") %>%
                 mutate(subject = as.factor(subject),
                        voice = as.factor(voice),
                        linguistic_unit = as.factor(linguistic_unit),
                        LetterType = as.factor(LetterType)) %>%
-                filter(LetterType != "Space") %>%
                 group_by(subject,voice,linguistic_unit, LetterType) %>%
                 summarise(mean_acc = mean(letter_accuracy))
                   
@@ -181,6 +186,140 @@ E1B_graph_acc
 ggarrange(E1B_graph_iksi,E1B_graph_acc)
 
 ```
+
+# First letter IKSIs
+
+```{r}
+E1B_firstletter_iksis <- talk_type_E1B_data
+
+E1B_firstletter_iksis <- E1B_firstletter_iksis %>%
+  filter(accuracy == 1,
+         iksis < 5000,
+         LetterType == "First") %>%
+  mutate(condition = paste(voice,linguistic_unit,sep="_")) %>%
+  mutate(subject = as.factor(subject),
+         condition = as.factor(condition)) %>%
+  group_by(subject,condition) %>%
+  summarize(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+            prop_removed = modified_recursive_moving(iksis)$prop_removed)
+
+E1B_FL_aov_out <- aov(mean_iksi ~ condition + 
+                    Error(subject/(condition)), E1B_firstletter_iksis)
+
+knitr::kable(xtable(summary(E1B_FL_aov_out)))
+
+E1B_FL_apa_print <- apa_print(E1B_FL_aov_out)
+E1B_FL_means <- model.tables(E1B_FL_aov_out,"means")
+
+```
+
+```{r}
+E1B_FL_iksi_table <- E1B_firstletter_iksis %>%
+              group_by(condition) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_FL_graph_iksi <- ggplot(E1B_FL_iksi_table, aes(x=condition,
+                                             y=mIKSI))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=12)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  ylab("Mean IKSI (ms)")+
+  xlab("Linguistic Unit")
+
+knitr::kable(E1B_FL_iksi_table)
+E1B_FL_graph_iksi
+```
+
+### contrasts
+
+```{r}
+#levels(E1B_firstletter_iksis$condition)
+# normal, silent_letter, silent_word, talk_letter, talk_word
+# set up linear contrasts
+c1 <- c(1, 0, -.5, 0, -.5) # normal vs. silent_word & talk_word
+c2 <- c(-1/3, .5, -1/3, .5, -1/3) # normal and word vs letter
+c3 <- c(0,-1,0,1,0) # talk letter vs silent letter
+
+# create a contrast matrix
+mat <- cbind(c1,c2,c3)
+
+# assign the contrasts to the group
+contrasts(E1B_firstletter_iksis$condition) <- mat
+
+# run the ANOVA
+aov_out <- aov(mean_iksi ~ condition +Error(subject/condition), E1B_firstletter_iksis)
+
+E1B_FL_means <- model.tables(aov_out,"means")
+
+# print the contrasts, add names for the contrasts
+summary(aov_out, split=list("condition"=list("normal vs word"=1, 
+                                                "normalword vs letter" = 2, 
+                                                "talk letter vs silent letter"=3)),
+            expand.split=TRUE) 
+
+## t test contrasts
+
+# normal vs. words
+a<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Normal_Normal",]$mean_iksi
+b1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Word",]$mean_iksi
+b2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Word",]$mean_iksi
+
+t.test((-1*a)+((.5*b1) + (.5*b2)))
+
+t_contrast_rm(df=E1B_firstletter_iksis,
+              subject = "subject",
+              dv = "mean_iksi",
+              condition = "condition",
+              A_levels = c("Normal_Normal"),
+              B_levels = c("Silent_Word","Talk_Word"),
+              contrast_weights = c(-1,.5,.5) )
+
+# normal and words vs. letters
+a1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Normal_Normal",]$mean_iksi
+a2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Word",]$mean_iksi
+a3<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Word",]$mean_iksi
+b1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Letter",]$mean_iksi
+b2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Letter",]$mean_iksi
+
+cs <- c(-1/3,-1/3,-1/3,.5,.5)
+c_vec <- (cs[1]*a1 + cs[2]*a2 + cs[3]*a3) + (cs[4]*b1 + cs[5]*b2)
+t.test(c_vec)
+
+t_contrast_rm(df=E1B_firstletter_iksis,
+              subject = "subject",
+              dv = "mean_iksi",
+              condition = "condition",
+              A_levels = c("Normal_Normal","Silent_Word","Talk_Word"),
+              B_levels = c("Silent_Letter","Talk_Letter"),
+              contrast_weights = c(-1/3,-1/3,-1/3,.5,.5) )
+
+# silent letter vs. talk letter
+a<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Letter",]$mean_iksi
+b<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Letter",]$mean_iksi
+
+t.test((-1*a)+(1*b))
+
+t_contrast_rm(df=E1B_firstletter_iksis,
+              subject = "subject",
+              dv = "mean_iksi",
+              condition = "condition",
+              A_levels = c("Silent_Letter"),
+              B_levels = c("Talk_Letter"),
+              contrast_weights = c(-1,1) )
+
+
+ 
+```
+
 
 
 
