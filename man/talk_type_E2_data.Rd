@@ -17,7 +17,7 @@
   \item{\code{subject}}{character subject code}
   \item{\code{LetterPosition}}{integer Serial position of letter in word}
   \item{\code{LetterType}}{character grouping factor, first letter vs other (middle) letters} 
-  \item{\code{letter_accuracy}}{character 1= correct, 0 = incorrect, estimates of letter level accuracy} 
+  \item{\code{letter_accuracy}}{numeric 1= correct, 0 = incorrect, estimates of letter level accuracy} 
 }}
 \source{
 \url{https://github.com/CrumpLab/TalkTyping/data}

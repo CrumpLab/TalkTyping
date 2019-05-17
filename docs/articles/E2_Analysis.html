@@ -569,15 +569,39 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(E2_graph_iksi,E2_graph_acc, <span class="dt">nrow=</span><span class="dv">2</span>)</a></code></pre></div>
 <p><img src="E2_Analysis_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
+<div id="speed-accuracy-tradeoff" class="section level1">
+<h1 class="hasAnchor">
+<a href="#speed-accuracy-tradeoff" class="anchor"></a>Speed accuracy tradeoff</h1>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">tradeoff &lt;-<span class="st"> </span>E2_iksi_table</a>
+<a class="sourceLine" id="cb11-2" title="2">tradeoff &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(tradeoff,<span class="dt">accuracy =</span> E2_acc_table<span class="op">$</span>mAcc,</a>
+<a class="sourceLine" id="cb11-3" title="3">                  <span class="dt">accuracy_sem =</span> E2_acc_table<span class="op">$</span>sem)</a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(tradeoff, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>mIKSI, <span class="dt">y=</span>accuracy, </a>
+<a class="sourceLine" id="cb11-6" title="6">                     <span class="dt">group =</span> suppression,</a>
+<a class="sourceLine" id="cb11-7" title="7">                     <span class="dt">shape=</span> LetterType,</a>
+<a class="sourceLine" id="cb11-8" title="8">                     <span class="dt">linetype =</span> suppression))<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>accuracy<span class="op">-</span>accuracy_sem,</a>
+<a class="sourceLine" id="cb11-12" title="12">                    <span class="dt">ymax=</span>accuracy<span class="op">+</span>accuracy_sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb11-13" title="13">                <span class="dt">linetype=</span><span class="st">"solid"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_errorbarh">geom_errorbarh</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">xmin=</span>mIKSI<span class="op">-</span>sem,</a>
+<a class="sourceLine" id="cb11-15" title="15">                    <span class="dt">xmax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb11-16" title="16">                <span class="dt">linetype=</span><span class="st">"solid"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean Accuracy"</span>)</a></code></pre></div>
+<p><img src="E2_Analysis_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+</div>
 <div id="save-all" class="section level1">
 <h1 class="hasAnchor">
 <a href="#save-all" class="anchor"></a>Save all</h1>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save.image</a></span>(<span class="dt">file=</span><span class="st">"E2_workspace.RData"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">talk_type_E1B_data &lt;-<span class="st"> </span>talk_type_E1B_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="st">                        </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">voice =</span> VoiceCondition,</a>
-<a class="sourceLine" id="cb12-3" title="3">                               <span class="dt">linguistic_unit =</span> ChunkCondition)</a>
-<a class="sourceLine" id="cb12-4" title="4"></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(talk_type_E1B_data, <span class="dt">file=</span><span class="st">"talk_type_E1B_data.RData"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save.image</a></span>(<span class="dt">file=</span><span class="st">"E2_workspace.RData"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">talk_type_E1B_data &lt;-<span class="st"> </span>talk_type_E1B_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="st">                        </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">voice =</span> VoiceCondition,</a>
+<a class="sourceLine" id="cb13-3" title="3">                               <span class="dt">linguistic_unit =</span> ChunkCondition)</a>
+<a class="sourceLine" id="cb13-4" title="4"></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(talk_type_E1B_data, <span class="dt">file=</span><span class="st">"talk_type_E1B_data.RData"</span>)</a></code></pre></div>
 </div>
   </div>
 
@@ -596,6 +620,7 @@
       </ul>
 </li>
       <li><a href="#figure-1">Figure 1</a></li>
+      <li><a href="#speed-accuracy-tradeoff">Speed accuracy tradeoff</a></li>
       <li><a href="#save-all">Save all</a></li>
       </ul>
 </div>

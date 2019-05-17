@@ -61,22 +61,21 @@ E1B_iksi_table <- E1B_data %>%
 
 #levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
 
-E1B_graph_iksi <- ggplot(E1B_iksi_table, aes(x=LetterType,
+E1B_graph_iksi <- ggplot(E1B_iksi_table, aes(x=linguistic_unit,
                                              y=mIKSI,
-                                             group=linguistic_unit,
-                                             shape=linguistic_unit,
-                                             linetype=linguistic_unit))+
-  geom_line()+
+                                             group=LetterType,
+                                             fill=LetterType))+
+  geom_bar(stat="identity", position="dodge")+
   geom_errorbar(aes(ymin=mIKSI-sem,
                     ymax=mIKSI+sem), width=.1,
-                linetype="solid")+
-  geom_point(size=2.5)+
-  geom_point(size=1.5, color="white")+
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
   theme_classic(base_size=12)+
   theme(legend.position = "top",
         legend.title = element_blank())+
   ylab("Mean IKSI (ms)")+
-  xlab("Letter position")+
+  xlab("Linguistic Unit")+
   facet_wrap(~voice)
 
 knitr::kable(E1B_iksi_table)
@@ -85,6 +84,40 @@ E1B_graph_iksi
 ```
 
 ## accuracy
+
+### get letter level accuracy
+
+letter level accuracies were added to the talk_type_E1B_data file.
+
+```{r, eval = FALSE}
+E1Bacc_data <- talk_type_E1B_data
+
+E1Bacc_data$closest[is.na(E1Bacc_data$closest)] <- ""
+
+letter_accuracy <- E1Bacc_data$accuracy
+for(i in 1:dim(E1Bacc_data)[1]){
+  clet <- as.character(E1Bacc_data[i,]$letters)
+  cword <- unlist(strsplit(as.character(E1Bacc_data[i,]$closest),split=""))
+  if(E1Bacc_data$accuracy[i] == 0){
+    if(length(cword)>0){
+      if(E1Bacc_data[i,]$LetterPosition <= length(cword)){
+        if(clet != " "){
+          if(clet == cword[E1Bacc_data[i,]$LetterPosition]){
+            letter_accuracy[i] <- 1
+          } else {
+            letter_accuracy[i] <- 0
+          }
+        }
+      }
+    }
+  }
+}
+
+E1Bacc_data <- cbind(E1Bacc_data,letter_accuracy)
+
+talk_type_E1B_data <- E1Bacc_data
+```
+
 
 ```{r}
 
@@ -98,12 +131,11 @@ E1Bacc_data <- E1Bacc_data %>%
                        voice = as.factor(voice),
                        linguistic_unit = as.factor(linguistic_unit),
                        LetterType = as.factor(LetterType)) %>%
-                filter(LetterType != "Space",
-                       LetterPosition == 1) %>%
-                group_by(subject,voice,linguistic_unit) %>%
-                summarise(mean_acc = mean(accuracy))
+                filter(LetterType != "Space") %>%
+                group_by(subject,voice,linguistic_unit, LetterType) %>%
+                summarise(mean_acc = mean(letter_accuracy))
                   
-E1Bacc_aov_out <- aov(mean_acc ~ voice*linguistic_unit + Error(subject/(voice*linguistic_unit)), E1Bacc_data)
+E1Bacc_aov_out <- aov(mean_acc ~ voice*linguistic_unit*LetterType + Error(subject/(voice*linguistic_unit*LetterType)), E1Bacc_data)
 
 E1Bacc_apa_print <- apa_print(E1Bacc_aov_out)
 E1Bacc_means <- model.tables(E1Bacc_aov_out,"means")
@@ -114,30 +146,30 @@ knitr::kable(xtable(summary(E1Bacc_aov_out)))
 
 ```{r, fig.width=3, fig.height=3}
 E1B_acc_table <- E1Bacc_data %>%
-              group_by(voice,linguistic_unit) %>%
+              group_by(voice,linguistic_unit, LetterType) %>%
               summarize(mAcc = mean(mean_acc),
                         sem = sd(mean_acc)/sqrt(length(mean_acc)))
 
 #levels(E1A_acc_table$paragraph) <- c("Say Letter", "Say Word")
 
 E1B_graph_acc <- ggplot(E1B_acc_table, 
-                         aes(x=voice,
+                         aes(x=linguistic_unit,
                              y=mAcc, 
-                             group=linguistic_unit,
-                             shape=linguistic_unit,
-                             linetype=linguistic_unit))+
-  geom_line()+
+                             group=LetterType,
+                             fill=LetterType))+
+  geom_bar(stat="identity",position="dodge")+
   geom_errorbar(aes(ymin=mAcc-sem,
                     ymax=mAcc+sem), width=.1,
-                linetype="solid")+
-  geom_point(size=2.5)+
-  geom_point(size=1.5, color="white")+
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
   theme_classic(base_size=12)+
   theme(legend.position = "top",
         legend.title = element_blank())+
   ylab("Mean Word Accuracy")+
-  xlab("Instruction")+
-  coord_cartesian(ylim=c(.8,1))
+  xlab("Linguistic Unit")+
+  coord_cartesian(ylim=c(.8,1))+
+  facet_wrap(~voice)
 
 knitr::kable(E1B_acc_table)
 E1B_graph_acc

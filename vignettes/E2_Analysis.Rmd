@@ -184,6 +184,29 @@ ggarrange(E2_graph_iksi,E2_graph_acc, nrow=2)
 
 ```
 
+# Speed accuracy tradeoff
+
+```{r}
+tradeoff <- E2_iksi_table
+tradeoff <- cbind(tradeoff,accuracy = E2_acc_table$mAcc,
+                  accuracy_sem = E2_acc_table$sem)
+
+ggplot(tradeoff, aes(x=mIKSI, y=accuracy, 
+                     group = suppression,
+                     shape= LetterType,
+                     linetype = suppression))+
+  geom_point()+
+  geom_line() +
+  geom_errorbar(aes(ymin=accuracy-accuracy_sem,
+                    ymax=accuracy+accuracy_sem), width=.1,
+                linetype="solid")+
+  geom_errorbarh(aes(xmin=mIKSI-sem,
+                    xmax=mIKSI+sem), width=.2,
+                linetype="solid")+
+  theme_classic(base_size=12)+
+  xlab("Mean IKSI (ms)")+
+  ylab("Mean Accuracy")
+```
 
 
 # Save all

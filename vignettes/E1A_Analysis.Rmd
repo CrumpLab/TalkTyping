@@ -72,7 +72,7 @@ E1A_graph_iksi <- ggplot(E1A_iksi_table, aes(x=linguistic_unit,
   theme(legend.position = "top",
         legend.title = element_blank())+
   ylab("Mean IKSI (ms)")+
-  xlab("Letter position")
+  xlab("Linguistic Unit")
 
 knitr::kable(E1A_iksi_table)
 E1A_graph_iksi
@@ -126,7 +126,7 @@ E1A_graph_acc <- ggplot(E1A_acc_table,
   theme(legend.position = "top",
         legend.title = element_blank())+
   ylab("Mean Accuracy")+
-  xlab("Letter position")+
+  xlab("Linguistic Unit")+
   coord_cartesian(ylim=c(.8,1))
 
 knitr::kable(E1A_acc_table)
