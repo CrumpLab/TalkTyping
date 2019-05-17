@@ -1,5 +1,5 @@
 ---
-title: "Analysis | E2: Verbal Suppression"
+title: "Analysis E2 Verbal Suppression"
 author: "Matt"
 date: "5/14/2019"
 output: html_document
