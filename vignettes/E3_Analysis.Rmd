@@ -404,8 +404,8 @@ E3acc_ML_200vs100 <- apa_print(t_contrast_rm(df=E3acc_ML_data,
                              subject = "subject",
                              dv = "mean_acc",
                              condition = "delay",
-                             A_levels = c("D200A","D200B"),
-                             B_levels = c("D100A","D100B"),
+                             A_levels = c("D100A","D100B"),
+                             B_levels = c("D200A","D200B"),
                              contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
 
 ```

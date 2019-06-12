@@ -264,7 +264,7 @@ load("E1B_workspace.RData")
 
 The same pre-processing rules were applied to the data. The outlier elimination procedure excluded an average of  `r round(mean(E1B_data$prop_removed), digits=2)` observations from each condition.  Mean IKSIs and accuracies for each condition are displayed in Figure \@ref(fig:E1BFigure)
 
-```{r E1BFigure, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the five paragraph typing conditions. The scatterplots for each letter type show mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25}
+```{r E1BFigure, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the five paragraph typing conditions. For each letter type, the scatterplot shows mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25}
 
 grid.arrange(
   ggarrange(E1B_FL_graph_iksi,E1B_ML_graph_iksi, 
@@ -353,11 +353,10 @@ The same general typing test procedure from Experiment 1b was used, with the exc
 load("E2_workspace.RData")
 ```
 
-### First letter IKSIs
+The same pre-processing rules were applied to the data. The outlier elimination procedure excluded an average of  `r round(mean(E2_data$prop_removed), digits=2)` observations from each condition.  Mean IKSIs and accuracies for each condition are displayed in Figure \@ref(fig:E2).
 
-Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. 
 
-```{r E2, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the six paragraph typing conditions. The scatterplots for each letter type show mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=TRUE}
+```{r E2, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the six paragraph typing conditions. Note, the range of mean IKSIs for the middle letters is truncated to show differences between conditions. For each letter type, the scatterplot shows mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=TRUE}
 
 grid.arrange(
   ggarrange(E2_FL_graph_iksi,E2_ML_graph_iksi, 
@@ -371,7 +370,9 @@ grid.arrange(
   widths=c(4.875,2))  
 ```
 
-The main effect of paragraph typing condition was significant, `r E2_FL_apa_print$full_result$suppression`. Linear contrasts were constructed to interpret the major patterns. First letter mean IKSIs during normal typing were not significantly different from the Say The, and Tuesday Thursday conditions, `r E2_FL_NvsTheThu$full_result`. First letter mean IKSIs were longer when saying the Alphabet compared to Say The, and Tuesday Thursday, `r E2_FL_AlphavsTheThu$full_result`. Finally, first letter mean IKSIs were longest while saying Random Letters and Counting compared to the Alphabet condition, `r E2_FL_AlphavsRandCnt$full_result`.
+### First letter IKSIs
+
+Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. The main effect of paragraph typing condition was significant, `r E2_FL_apa_print$full_result$suppression`. Linear contrasts were constructed to interpret the major patterns. First letter mean IKSIs during normal typing were not significantly different from the Say The, and Tuesday Thursday conditions, `r E2_FL_NvsTheThu$full_result`. First letter mean IKSIs were longer when saying the Alphabet compared to Say The, and Tuesday Thursday, `r E2_FL_AlphavsTheThu$full_result`. Finally, first letter mean IKSIs were longest while saying Random Letters and Counting compared to the Alphabet condition, `r E2_FL_AlphavsRandCnt$full_result`.
 
 ### Middle letter IKSIs
 
@@ -406,14 +407,11 @@ The same general typing test procedure from Experiment 1b was used, with the exc
 
 ## Results
 
-
 ```{r, echo=FALSE, eval=TRUE}
 load("E3_workspace.RData")
 ```
 
-### First letter IKSIs
-
-Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. 
+The same pre-processing rules were applied to the data. The outlier elimination procedure excluded an average of  `r round(mean(E3_data$prop_removed), digits=2)` observations from each condition.  Mean IKSIs and accuracies for each condition are displayed in Figure \@ref(fig:E3).
 
 ```{r E3, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the delayedd auditry feedback conditins. For each letter type, the scatterplot shows mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=TRUE}
 
@@ -428,6 +426,17 @@ grid.arrange(
   ncol = 2, 
   widths=c(4.875,2))  
 ```
+
+
+### IKSIs
+
+Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. The main effect of paragraph typing condition was not significant, `r E3_FL_apa_print$full_result$delay`. Similarly, for the companion ANOVA for the middle letter IKSIs, the main effect of paragraph typing condition was not significant, `r E3_ML_apa_print$full_result$delay`.
+
+### Accuracy
+
+Mean first letter accuracies for each subject in each condition were submitted to a one-way repeated measures ANOVA. The main effect of paragraph typing condition was significant, `r E3acc_FL_apa_print$full_result$delay`. Mean accuracy was higher for the 100 ms delay condition compared to the 0 ms delay condition, `r E3acc_FL_0vs100$full_result`, and to the 200 ms delay condition, `r E3acc_FL_200vs100$full_result`. Mean accuracy was not different for the 0 ms and 200 ms conditions, `r E3acc_FL_0vs200$full_result`.
+
+For middle letter accuracies, the main effect of paragraph typing condition was significant, `r E3acc_ML_apa_print$full_result$delay`. Mean accuracy was not different for the 0 ms and 100 ms conditions, `r E3acc_ML_0vs100$full_result`. Mean accuracy was lower for the 200 ms delay condition compared to the 0 ms delay condition, `r E3acc_ML_0vs200$full_result`, and to the 100 ms delay condition, `r E3acc_ML_200vs100$full_result`.
 
 ## Discussion
 
