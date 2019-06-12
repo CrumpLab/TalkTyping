@@ -6,10 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analysis E1A Inner Speech Talk and Type • TalkTyping</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Analysis E1A Inner Speech Talk and Type">
+<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Analysis E1A Inner Speech Talk and Type">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -112,35 +113,35 @@
 <div id="load-libraries" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-libraries" class="anchor"></a>Load Libraries</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(papaja)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(TalkTyping)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Crump)</a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(xtable)</a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggpubr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(papaja)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(TalkTyping)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Crump)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(xtable)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggpubr)</a></code></pre></div>
 </div>
 <div id="e1a-iksi-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#e1a-iksi-analysis" class="anchor"></a>E1A IKSI Analysis</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">#load E1A data</span></a>
-<a class="sourceLine" id="cb2-2" title="2">E1_data &lt;-<span class="st"> </span>talk_type_E1A_data</a>
-<a class="sourceLine" id="cb2-3" title="3"></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co"># IKSI analysis</span></a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6">E1_data &lt;-<span class="st"> </span>E1_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(errors <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb2-9" title="9">                   iksis <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>,</a>
-<a class="sourceLine" id="cb2-10" title="10">                   LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_iksi =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>restricted),</a>
-<a class="sourceLine" id="cb2-13" title="13">                      <span class="dt">prop_removed =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>prop_removed)</a>
-<a class="sourceLine" id="cb2-14" title="14">                  </a>
-<a class="sourceLine" id="cb2-15" title="15">E1_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1_data)</a>
-<a class="sourceLine" id="cb2-17" title="17"></a>
-<a class="sourceLine" id="cb2-18" title="18">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1_aov_out)))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">#load E1A data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">E1_data &lt;-<span class="st"> </span>talk_type_E1A_data</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># IKSI analysis</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">E1_data &lt;-<span class="st"> </span>E1_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(errors <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">                   iksis <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>,</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">                   LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject,linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">            </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_iksi =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>restricted),</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">                      <span class="dt">prop_removed =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/Crump/topics/modified_recursive_moving">modified_recursive_moving</a></span>(iksis)<span class="op">$</span>prop_removed)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">                  </a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">E1_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_iksi <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="st">                    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1_data)</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1_aov_out)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -209,32 +210,32 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">E1_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1_aov_out)</a>
-<a class="sourceLine" id="cb3-2" title="2">E1_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1_aov_out,<span class="st">"means"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">E1A_iksi_table &lt;-<span class="st"> </span>E1_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mIKSI =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_iksi),</a>
-<a class="sourceLine" id="cb4-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_iksi)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_iksi)))</a>
-<a class="sourceLine" id="cb4-5" title="5"></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_iksi_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
-<a class="sourceLine" id="cb4-7" title="7"></a>
-<a class="sourceLine" id="cb4-8" title="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb4-9" title="9">                                             <span class="dt">y=</span>mIKSI, </a>
-<a class="sourceLine" id="cb4-10" title="10">                                             <span class="dt">group=</span>LetterType,</a>
-<a class="sourceLine" id="cb4-11" title="11">                                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
-<a class="sourceLine" id="cb4-14" title="14">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb4-15" title="15">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
-<a class="sourceLine" id="cb4-17" title="17">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
-<a class="sourceLine" id="cb4-20" title="20">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-22" title="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Linguistic Unit"</span>)</a>
-<a class="sourceLine" id="cb4-23" title="23"></a>
-<a class="sourceLine" id="cb4-24" title="24">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_iksi_table)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">E1_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1_aov_out)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">E1_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1_aov_out,<span class="st">"means"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">E1A_iksi_table &lt;-<span class="st"> </span>E1_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mIKSI =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_iksi),</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_iksi)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_iksi)))</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_iksi_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">E1A_graph_iksi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_iksi_table, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">                                             <span class="dt">y=</span>mIKSI, </a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">                                             <span class="dt">group=</span>LetterType,</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">                                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mIKSI<span class="op">-</span>sem,</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">                    <span class="dt">ymax=</span>mIKSI<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean IKSI (ms)"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Linguistic Unit"</span>)</a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_iksi_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">linguistic_unit</th>
@@ -269,28 +270,28 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">E1A_graph_iksi</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">E1A_graph_iksi</a></code></pre></div>
 <p><img src="E1A_Analysis_files/figure-html/unnamed-chunk-3-1.png" width="288"></p>
 <div id="accuracy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#accuracy" class="anchor"></a>accuracy</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Accuracy</span></a>
-<a class="sourceLine" id="cb6-2" title="2"></a>
-<a class="sourceLine" id="cb6-3" title="3">E1acc_data &lt;-<span class="st"> </span>talk_type_E1A_data</a>
-<a class="sourceLine" id="cb6-4" title="4"></a>
-<a class="sourceLine" id="cb6-5" title="5"></a>
-<a class="sourceLine" id="cb6-6" title="6">E1acc_data &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject, linguistic_unit, LetterType) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_acc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(errors))</a>
-<a class="sourceLine" id="cb6-11" title="11">                  </a>
-<a class="sourceLine" id="cb6-12" title="12">E1acc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1acc_data)</a>
-<a class="sourceLine" id="cb6-13" title="13"></a>
-<a class="sourceLine" id="cb6-14" title="14">E1acc_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1acc_aov_out)</a>
-<a class="sourceLine" id="cb6-15" title="15">E1acc_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1acc_aov_out,<span class="st">"means"</span>)</a>
-<a class="sourceLine" id="cb6-16" title="16"></a>
-<a class="sourceLine" id="cb6-17" title="17">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1acc_aov_out)))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Accuracy</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">E1acc_data &lt;-<span class="st"> </span>talk_type_E1A_data</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">E1acc_data &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">subject =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(subject)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(LetterType <span class="op">!=</span><span class="st"> "Space"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(subject, linguistic_unit, LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">                </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">mean_acc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(errors))</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">                  </a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">E1acc_aov_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">aov</a></span>(mean_acc <span class="op">~</span><span class="st"> </span>linguistic_unit<span class="op">*</span>LetterType <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/aov">Error</a></span>(subject<span class="op">/</span>(linguistic_unit<span class="op">*</span>LetterType)), E1acc_data)</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">E1acc_apa_print &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/papaja/topics/apa_print">apa_print</a></span>(E1acc_aov_out)</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">E1acc_means &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/model.tables">model.tables</a></span>(E1acc_aov_out,<span class="st">"means"</span>)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/xtable/topics/xtable">xtable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(E1acc_aov_out)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -359,32 +360,32 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">E1A_acc_table &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mAcc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_acc),</a>
-<a class="sourceLine" id="cb7-4" title="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_acc)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_acc)))</a>
-<a class="sourceLine" id="cb7-5" title="5"></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_acc_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
-<a class="sourceLine" id="cb7-7" title="7"></a>
-<a class="sourceLine" id="cb7-8" title="8">E1A_graph_acc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_acc_table, </a>
-<a class="sourceLine" id="cb7-9" title="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
-<a class="sourceLine" id="cb7-10" title="10">                             <span class="dt">y=</span>mAcc, </a>
-<a class="sourceLine" id="cb7-11" title="11">                             <span class="dt">group=</span>LetterType,</a>
-<a class="sourceLine" id="cb7-12" title="12">                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
-<a class="sourceLine" id="cb7-15" title="15">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb7-16" title="16">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-17" title="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
-<a class="sourceLine" id="cb7-18" title="18">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-19" title="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
-<a class="sourceLine" id="cb7-21" title="21">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean Accuracy"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Linguistic Unit"</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">ylim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">8</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb7-25" title="25"></a>
-<a class="sourceLine" id="cb7-26" title="26">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_acc_table)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">E1A_acc_table &lt;-<span class="st"> </span>E1acc_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(linguistic_unit,LetterType) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">              </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">mAcc =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(mean_acc),</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">                        <span class="dt">sem =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(mean_acc)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(mean_acc)))</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(E1A_acc_table<span class="op">$</span>linguistic_unit) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Say Letter"</span>, <span class="st">"Say Word"</span>)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">E1A_graph_acc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(E1A_acc_table, </a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>linguistic_unit,</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">                             <span class="dt">y=</span>mAcc, </a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">                             <span class="dt">group=</span>LetterType,</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">                             <span class="dt">fill=</span>LetterType))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>,<span class="dt">position=</span><span class="st">"dodge"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange">geom_errorbar</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">ymin=</span>mAcc<span class="op">-</span>sem,</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">                    <span class="dt">ymax=</span>mAcc<span class="op">+</span>sem), <span class="dt">width=</span>.<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">                <span class="dt">linetype=</span><span class="st">"solid"</span>, <span class="dt">position=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_dodge">position_dodge</a></span>(.<span class="dv">9</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_grey">scale_fill_grey</a></span>(<span class="dt">start =</span> <span class="fl">0.6</span>, <span class="dt">end =</span> <span class="fl">0.8</span>, <span class="dt">na.value =</span> <span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">  <span class="dt">aesthetics =</span> <span class="st">"fill"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>(<span class="dt">base_size=</span><span class="dv">12</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>,</a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>())<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Mean Accuracy"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Linguistic Unit"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">ylim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">8</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(E1A_acc_table)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">linguistic_unit</th>
@@ -419,33 +420,33 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">E1A_graph_acc</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">E1A_graph_acc</a></code></pre></div>
 <p><img src="E1A_Analysis_files/figure-html/unnamed-chunk-5-1.png" width="288"></p>
 </div>
 </div>
 <div id="figure-1" class="section level1">
 <h1 class="hasAnchor">
 <a href="#figure-1" class="anchor"></a>Figure 1</h1>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(E1A_graph_iksi,E1A_graph_acc)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(E1A_graph_iksi,E1A_graph_acc)</a></code></pre></div>
 <p><img src="E1A_Analysis_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="demographic-information" class="section level1">
 <h1 class="hasAnchor">
 <a href="#demographic-information" class="anchor"></a>Demographic information</h1>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">E1A_dmg &lt;-<span class="st"> </span>talk_type_E1A_dmg</a>
-<a class="sourceLine" id="cb10-2" title="2">proportion_word &lt;-<span class="st"> </span>E1A_dmg <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="st">                    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(InnerVoice) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">                    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_word =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(InnerVoice)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(E1A_dmg)[<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb10-5" title="5"></a>
-<a class="sourceLine" id="cb10-6" title="6">inner_voice_props&lt;-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb10-7" title="7">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"Words"</span>,]<span class="op">$</span>p_word, <span class="dt">digits=</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"Letters"</span>,]<span class="op">$</span>p_word,<span class="dt">digits=</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"undefined"</span>,]<span class="op">$</span>p_word,<span class="dt">digits=</span><span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">E1A_dmg &lt;-<span class="st"> </span>talk_type_E1A_dmg</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">proportion_word &lt;-<span class="st"> </span>E1A_dmg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">                    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(InnerVoice) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">                    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_word =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(InnerVoice)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(E1A_dmg)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">inner_voice_props&lt;-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"Words"</span>,]<span class="op">$</span>p_word, <span class="dt">digits=</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"Letters"</span>,]<span class="op">$</span>p_word,<span class="dt">digits=</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(proportion_word[proportion_word<span class="op">$</span>InnerVoice<span class="op">==</span><span class="st">"undefined"</span>,]<span class="op">$</span>p_word,<span class="dt">digits=</span><span class="dv">2</span>))</a></code></pre></div>
 </div>
 <div id="save-all" class="section level1">
 <h1 class="hasAnchor">
 <a href="#save-all" class="anchor"></a>Save all</h1>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save.image</a></span>(<span class="dt">file=</span><span class="st">"E1A_workspace.RData"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save.image</a></span>(<span class="dt">file=</span><span class="st">"E1A_workspace.RData"</span>)</a></code></pre></div>
 </div>
   </div>
 

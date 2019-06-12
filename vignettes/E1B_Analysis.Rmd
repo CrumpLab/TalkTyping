@@ -8,7 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
-                      message = FALSE)
+                      message = FALSE,
+                      cache = TRUE)
 ```
 
 # Load Libraries
@@ -190,9 +191,9 @@ ggarrange(E1B_graph_iksi,E1B_graph_acc)
 # First letter IKSIs
 
 ```{r}
-E1B_firstletter_iksis <- talk_type_E1B_data
+E1B_FL_iksis <- talk_type_E1B_data
 
-E1B_firstletter_iksis <- E1B_firstletter_iksis %>%
+E1B_FL_iksis <- E1B_FL_iksis %>%
   filter(accuracy == 1,
          iksis < 5000,
          LetterType == "First") %>%
@@ -204,7 +205,7 @@ E1B_firstletter_iksis <- E1B_firstletter_iksis %>%
             prop_removed = modified_recursive_moving(iksis)$prop_removed)
 
 E1B_FL_aov_out <- aov(mean_iksi ~ condition + 
-                    Error(subject/(condition)), E1B_firstletter_iksis)
+                    Error(subject/(condition)), E1B_FL_iksis)
 
 knitr::kable(xtable(summary(E1B_FL_aov_out)))
 
@@ -214,14 +215,16 @@ E1B_FL_means <- model.tables(E1B_FL_aov_out,"means")
 ```
 
 ```{r}
-E1B_FL_iksi_table <- E1B_firstletter_iksis %>%
+E1B_FL_iksi_table <- E1B_FL_iksis %>%
               group_by(condition) %>%
               summarize(mIKSI = mean(mean_iksi),
-                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))%>%
+              mutate(voice = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,1]),
+                     linguistic_unit = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,2]))
 
 #levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
 
-E1B_FL_graph_iksi <- ggplot(E1B_FL_iksi_table, aes(x=condition,
+E1B_FL_graph_iksi <- ggplot(E1B_FL_iksi_table, aes(x=linguistic_unit,
                                              y=mIKSI))+
   geom_bar(stat="identity", position="dodge", fill="grey")+
   geom_errorbar(aes(ymin=mIKSI-sem,
@@ -229,11 +232,20 @@ E1B_FL_graph_iksi <- ggplot(E1B_FL_iksi_table, aes(x=condition,
                 linetype="solid", position=position_dodge(.9))+
   scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
   aesthetics = "fill")+
-  theme_classic(base_size=12)+
+  theme_classic(base_size=9)+
   theme(legend.position = "top",
         legend.title = element_blank())+
+  coord_cartesian(ylim=c(100,500))+
+  scale_y_continuous(minor_breaks=seq(200,500,25),
+                     breaks=seq(100,500,100))+
+    #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
   ylab("Mean IKSI (ms)")+
-  xlab("Linguistic Unit")
+  theme(axis.title.x = element_blank())+
+  facet_wrap(~voice, scales = "free_x", strip.position="bottom")
 
 knitr::kable(E1B_FL_iksi_table)
 E1B_FL_graph_iksi
@@ -242,7 +254,374 @@ E1B_FL_graph_iksi
 ### contrasts
 
 ```{r}
-#levels(E1B_firstletter_iksis$condition)
+# Normal vs. silentword and talk word
+E1B_FL_NvsW <- apa_print(t_contrast_rm(df=E1B_FL_iksis,
+                             subject = "subject",
+                             dv = "mean_iksi",
+                             condition = "condition",
+                             A_levels = c("Normal_Normal"),
+                             B_levels = c("Silent_Word","Talk_Word"),
+                             contrast_weights = c(-1,.5,.5) ))
+E1B_FL_NvsW
+
+# Normal AND words VS. Letters
+
+E1B_FL_NWvsL <- apa_print(t_contrast_rm(df=E1B_FL_iksis,
+                                        subject = "subject",
+                                        dv = "mean_iksi",
+                                        condition = "condition",
+                                        A_levels = c("Normal_Normal","Silent_Word","Talk_Word"),
+                                        B_levels = c("Silent_Letter","Talk_Letter"),
+                                        contrast_weights = c(-1/3,-1/3,-1/3,.5,.5)))
+
+E1B_FL_NWvsL
+
+# silent letter vs. talk letter
+E1B_FL_SLvsTL <- apa_print(t_contrast_rm(df=E1B_FL_iksis,
+                                        subject = "subject",
+                                        dv = "mean_iksi",
+                                        condition = "condition",
+                                        A_levels = c("Silent_Letter"),
+                                        B_levels = c("Talk_Letter"),
+                                        contrast_weights = c(-1,1) ))
+E1B_FL_SLvsTL
+
+```
+
+# First letter Accuracy
+
+```{r}
+E1B_FL_acc <- talk_type_E1B_data
+
+E1B_FL_acc <- E1B_FL_acc %>%
+  filter(
+         LetterType == "First") %>%
+  mutate(condition = paste(voice,linguistic_unit,sep="_")) %>%
+  mutate(subject = as.factor(subject),
+         condition = as.factor(condition)) %>%
+  group_by(subject,condition) %>%
+  summarize(mean_acc = mean(letter_accuracy))
+
+E1B_FL_acc_aov_out <- aov(mean_acc ~ condition + 
+                    Error(subject/(condition)), E1B_FL_acc)
+
+knitr::kable(xtable(summary(E1B_FL_acc_aov_out)))
+
+E1B_FL_acc_apa_print <- apa_print(E1B_FL_acc_aov_out)
+E1B_FL_acc_means <- model.tables(E1B_FL_acc_aov_out,"means")
+
+```
+
+```{r}
+E1B_FL_acc_table <- E1B_FL_acc %>%
+              group_by(condition) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc)))%>%
+              mutate(voice = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,1]),
+                     linguistic_unit = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,2]))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_FL_acc_graph <- ggplot(E1B_FL_acc_table, aes(x=linguistic_unit,
+                                             y=mAcc))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(.8,1))+
+  scale_y_continuous(minor_breaks=seq(.8,1,.05),
+                     breaks=seq(.8,1,.05))+
+    #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean Accuracy")+
+  theme(axis.title.x = element_blank())+
+  facet_wrap(~voice, scales = "free_x",
+             strip.position="bottom")
+
+knitr::kable(E1B_FL_acc_table)
+E1B_FL_acc_graph
+```
+
+### contrasts
+
+```{r}
+# Normal vs. silentword and talk word
+E1B_FL_acc_NvsW <- apa_print(t_contrast_rm(df=E1B_FL_acc,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "condition",
+                             A_levels = c("Normal_Normal"),
+                             B_levels = c("Silent_Word","Talk_Word"),
+                             contrast_weights = c(-1,.5,.5) ))
+E1B_FL_acc_NvsW
+
+# Normal AND words VS. Letters
+
+E1B_FL_acc_NWvsL <- apa_print(t_contrast_rm(df=E1B_FL_acc,
+                                        subject = "subject",
+                                        dv = "mean_acc",
+                                        condition = "condition",
+                                        A_levels = c("Normal_Normal","Silent_Word","Talk_Word"),
+                                        B_levels = c("Silent_Letter","Talk_Letter"),
+                                        contrast_weights = c(-1/3,-1/3,-1/3,.5,.5)))
+
+E1B_FL_acc_NWvsL
+
+# silent letter vs. talk letter
+E1B_FL_acc_SLvsTL <- apa_print(t_contrast_rm(df=E1B_FL_acc,
+                                        subject = "subject",
+                                        dv = "mean_acc",
+                                        condition = "condition",
+                                        A_levels = c("Silent_Letter"),
+                                        B_levels = c("Talk_Letter"),
+                                        contrast_weights = c(-1,1) ))
+E1B_FL_acc_SLvsTL
+
+```
+
+
+
+
+# Middle letter IKSIs
+
+```{r}
+E1B_ML_iksis <- talk_type_E1B_data
+
+E1B_ML_iksis <- E1B_ML_iksis %>%
+  filter(accuracy == 1,
+         iksis < 5000,
+         LetterType == "Middle") %>%
+  mutate(condition = paste(voice,linguistic_unit,sep="_")) %>%
+  mutate(subject = as.factor(subject),
+         condition = as.factor(condition)) %>%
+  group_by(subject,condition) %>%
+  summarize(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+            prop_removed = modified_recursive_moving(iksis)$prop_removed)
+
+E1B_ML_aov_out <- aov(mean_iksi ~ condition + 
+                    Error(subject/(condition)), E1B_ML_iksis)
+
+knitr::kable(xtable(summary(E1B_ML_aov_out)))
+
+E1B_ML_apa_print <- apa_print(E1B_ML_aov_out)
+E1B_ML_means <- model.tables(E1B_ML_aov_out,"means")
+
+```
+
+```{r}
+E1B_ML_iksi_table <- E1B_ML_iksis %>%
+              group_by(condition) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))%>%
+              mutate(voice = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,1]),
+                     linguistic_unit = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,2]))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_ML_graph_iksi <- ggplot(E1B_ML_iksi_table, aes(x=linguistic_unit,
+                                             y=mIKSI))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(100,500))+
+  scale_y_continuous(minor_breaks=seq(100,500,25),
+                     breaks=seq(100,500,100))+
+   #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean IKSI (ms)")+
+  theme(axis.title.x = element_blank())+
+  facet_wrap(~voice, scales = "free_x",
+             strip.position="bottom")
+
+knitr::kable(E1B_ML_iksi_table)
+E1B_ML_graph_iksi
+```
+
+### contrasts
+
+```{r}
+# Normal vs. silentword and talk word
+E1B_ML_NvsW <- apa_print(t_contrast_rm(df=E1B_ML_iksis,
+                             subject = "subject",
+                             dv = "mean_iksi",
+                             condition = "condition",
+                             A_levels = c("Normal_Normal"),
+                             B_levels = c("Silent_Word","Talk_Word"),
+                             contrast_weights = c(-1,.5,.5) ))
+E1B_ML_NvsW
+
+# Normal AND words VS. Letters
+
+E1B_ML_NWvsL <- apa_print(t_contrast_rm(df=E1B_ML_iksis,
+                                        subject = "subject",
+                                        dv = "mean_iksi",
+                                        condition = "condition",
+                                        A_levels = c("Normal_Normal","Silent_Word","Talk_Word"),
+                                        B_levels = c("Silent_Letter","Talk_Letter"),
+                                        contrast_weights = c(-1/3,-1/3,-1/3,.5,.5)))
+
+E1B_ML_NWvsL
+
+# silent letter vs. talk letter
+E1B_ML_SLvsTL <- apa_print(t_contrast_rm(df=E1B_ML_iksis,
+                                        subject = "subject",
+                                        dv = "mean_iksi",
+                                        condition = "condition",
+                                        A_levels = c("Silent_Letter"),
+                                        B_levels = c("Talk_Letter"),
+                                        contrast_weights = c(-1,1) ))
+E1B_ML_SLvsTL
+
+```
+
+# Middle letter Accuracy
+
+```{r}
+E1B_ML_acc <- talk_type_E1B_data
+
+E1B_ML_acc <- E1B_ML_acc %>%
+  filter(
+         LetterType == "Middle") %>%
+  mutate(condition = paste(voice,linguistic_unit,sep="_")) %>%
+  mutate(subject = as.factor(subject),
+         condition = as.factor(condition)) %>%
+  group_by(subject,condition) %>%
+  summarize(mean_acc = mean(letter_accuracy))
+
+E1B_ML_acc_aov_out <- aov(mean_acc ~ condition + 
+                    Error(subject/(condition)), E1B_ML_acc)
+
+knitr::kable(xtable(summary(E1B_ML_acc_aov_out)))
+
+E1B_ML_acc_apa_print <- apa_print(E1B_ML_acc_aov_out)
+E1B_ML_acc_means <- model.tables(E1B_ML_acc_aov_out,"means")
+
+```
+
+```{r}
+E1B_ML_acc_table <- E1B_ML_acc %>%
+              group_by(condition) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc))) %>%
+              mutate(voice = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,1]),
+                     linguistic_unit = as.character(t(data.frame(strsplit(as.character(condition),split="_")))[,2]))
+
+#levels(E1A_iksi_table$paragraph) <- c("Say Letter", "Say Word")
+
+E1B_ML_acc_graph <- ggplot(E1B_ML_acc_table, aes(x=linguistic_unit,
+                                             y=mAcc))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(.8,1))+
+  scale_y_continuous(minor_breaks=seq(.8,1,.05),
+                     breaks=seq(.8,1,.05))+
+  #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean Accuracy")+
+  theme(axis.title.x = element_blank())+
+  facet_wrap(~voice, scales = "free_x",
+             strip.position="bottom")
+
+knitr::kable(E1B_ML_acc_table)
+E1B_ML_acc_graph
+```
+
+```{r}
+ggarrange(E1B_FL_graph_iksi,E1B_ML_graph_iksi, 
+          E1B_FL_acc_graph, E1B_ML_acc_graph, nrow=2, ncol=2,
+          labels = list(A="First Letter ",
+                        B="Middle Letters"),
+          hjust=-.8)
+```
+
+# speed accuracy tradeoff
+
+```{r}
+library(ggrepel)
+E1B_iksi_both <- rbind(E1B_FL_iksi_table,
+                       E1B_ML_iksi_table)
+E1B_iksi_both <- cbind(E1B_iksi_both, 
+                       Letter_Position = rep(c("First","Middle"), each=5))
+
+E1B_acc_both <- rbind(E1B_FL_acc_table,
+                       E1B_ML_acc_table)
+E1B_acc_both <- cbind(E1B_acc_both, 
+                       Letter_Position = rep(c("First","Middle"), each=5))
+
+E1B_SA <- cbind(E1B_iksi_both, accuracy = E1B_acc_both$mAcc)
+
+E1B_SA_graph <- ggplot(E1B_SA, aes(x=mIKSI,  y=accuracy,
+                   shape=Letter_Position,
+                   color=Letter_Position,
+                   label=condition))+
+  geom_point()+
+  geom_text_repel(size=1.7, color="black")+
+  coord_cartesian(xlim=c(100,500), ylim=c(.8,1))+
+  scale_x_continuous(breaks=seq(100,500,100))+
+  scale_color_grey(start = 0.2, end = 0.5, na.value = "red",
+  aesthetics = "color", guide =FALSE)+
+  theme_classic(base_size=10)+
+  ylab("Mean Accuracy")+
+  xlab("Mean IKSI (ms)")+
+  #facet_wrap(~Letter_Position, nrow=2,
+  #           strip.position="right")+
+  theme(legend.position ="top",
+        legend.direction = "horizontal")+
+  guides(shape = guide_legend(label.hjust = 0,
+                              keywidth=0.1))+
+  labs(shape="Letter")
+  
+
+E1B_SA_graph
+
+```
+
+
+```{r, fig.width=6.875, fig.height=3.25}
+library(gridExtra)
+
+grid.arrange(
+  ggarrange(E1B_FL_graph_iksi,E1B_ML_graph_iksi, 
+            E1B_FL_acc_graph, E1B_ML_acc_graph, nrow=2, ncol=2,
+            labels = list(A="First Letter ",
+                          B="Middle Letters"),
+            font.label = list(size=10),
+            hjust=-.8),
+  E1B_SA_graph,
+  ncol = 2, 
+  widths=c(4.5,2.375))                       
+```
+
+
+```{r, eval=FALSE}
+#levels(E1B_FL_iksis$condition)
 # normal, silent_letter, silent_word, talk_letter, talk_word
 # set up linear contrasts
 c1 <- c(1, 0, -.5, 0, -.5) # normal vs. silent_word & talk_word
@@ -253,10 +632,10 @@ c3 <- c(0,-1,0,1,0) # talk letter vs silent letter
 mat <- cbind(c1,c2,c3)
 
 # assign the contrasts to the group
-contrasts(E1B_firstletter_iksis$condition) <- mat
+contrasts(E1B_FL_iksis$condition) <- mat
 
 # run the ANOVA
-aov_out <- aov(mean_iksi ~ condition +Error(subject/condition), E1B_firstletter_iksis)
+aov_out <- aov(mean_iksi ~ condition +Error(subject/condition), E1B_FL_iksis)
 
 E1B_FL_means <- model.tables(aov_out,"means")
 
@@ -269,13 +648,13 @@ summary(aov_out, split=list("condition"=list("normal vs word"=1,
 ## t test contrasts
 
 # normal vs. words
-a<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Normal_Normal",]$mean_iksi
-b1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Word",]$mean_iksi
-b2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Word",]$mean_iksi
+a<-E1B_FL_iksis[E1B_FL_iksis$condition=="Normal_Normal",]$mean_iksi
+b1<-E1B_FL_iksis[E1B_FL_iksis$condition=="Silent_Word",]$mean_iksi
+b2<-E1B_FL_iksis[E1B_FL_iksis$condition=="Talk_Word",]$mean_iksi
 
 t.test((-1*a)+((.5*b1) + (.5*b2)))
 
-t_contrast_rm(df=E1B_firstletter_iksis,
+t_contrast_rm(df=E1B_FL_iksis,
               subject = "subject",
               dv = "mean_iksi",
               condition = "condition",
@@ -284,17 +663,17 @@ t_contrast_rm(df=E1B_firstletter_iksis,
               contrast_weights = c(-1,.5,.5) )
 
 # normal and words vs. letters
-a1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Normal_Normal",]$mean_iksi
-a2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Word",]$mean_iksi
-a3<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Word",]$mean_iksi
-b1<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Letter",]$mean_iksi
-b2<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Letter",]$mean_iksi
+a1<-E1B_FL_iksis[E1B_FL_iksis$condition=="Normal_Normal",]$mean_iksi
+a2<-E1B_FL_iksis[E1B_FL_iksis$condition=="Silent_Word",]$mean_iksi
+a3<-E1B_FL_iksis[E1B_FL_iksis$condition=="Talk_Word",]$mean_iksi
+b1<-E1B_FL_iksis[E1B_FL_iksis$condition=="Silent_Letter",]$mean_iksi
+b2<-E1B_FL_iksis[E1B_FL_iksis$condition=="Talk_Letter",]$mean_iksi
 
 cs <- c(-1/3,-1/3,-1/3,.5,.5)
 c_vec <- (cs[1]*a1 + cs[2]*a2 + cs[3]*a3) + (cs[4]*b1 + cs[5]*b2)
 t.test(c_vec)
 
-t_contrast_rm(df=E1B_firstletter_iksis,
+t_contrast_rm(df=E1B_FL_iksis,
               subject = "subject",
               dv = "mean_iksi",
               condition = "condition",
@@ -303,12 +682,12 @@ t_contrast_rm(df=E1B_firstletter_iksis,
               contrast_weights = c(-1/3,-1/3,-1/3,.5,.5) )
 
 # silent letter vs. talk letter
-a<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Silent_Letter",]$mean_iksi
-b<-E1B_firstletter_iksis[E1B_firstletter_iksis$condition=="Talk_Letter",]$mean_iksi
+a<-E1B_FL_iksis[E1B_FL_iksis$condition=="Silent_Letter",]$mean_iksi
+b<-E1B_FL_iksis[E1B_FL_iksis$condition=="Talk_Letter",]$mean_iksi
 
 t.test((-1*a)+(1*b))
 
-t_contrast_rm(df=E1B_firstletter_iksis,
+t_contrast_rm(df=E1B_FL_iksis,
               subject = "subject",
               dv = "mean_iksi",
               condition = "condition",
@@ -328,6 +707,20 @@ t_contrast_rm(df=E1B_firstletter_iksis,
 ```{r}
 save.image(file="E1B_workspace.RData")
 ```
+
+## Factorial write-up
+
+<!--
+
+Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Voice: Silent vs. Talk) x 2 (Linguistic Unit: words vs. letters) x 2 (Letter position: first vs. middle) repeated measures ANOVA. 
+
+The main effect of the linguistic unit condition was significant, `r #E1B_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r #papaja::printnum(E1B_means$tables$linguistic_unit["Word"], digits=0)` ms), rather than the letters (`r #papaja::printnum(E1B_means$tables$linguistic_unit["Letter"], digits=0)` ms) they were typing. The main effect of letter position was significant, `r #E1B_apa_print$full_result$LetterType`. Mean IKSIs were longer for the first letter (`r #papaja::printnum(E1B_means$tables$LetterType["First"], digits=0)` ms), compared to other letters  (`r #papaja::printnum(E1_means$tables$LetterType["Middle"], digits=0)` ms). The main effect of voice was not significant, `r #E1B_apa_print$full_result$coice`. Mean IKSIs were shorter for silent speaking (`r #papaja::printnum(E1B_means$tables$voice["Silent"], digits=0)` ms), compared to talking out loud  (`r #papaja::printnum(E1B_means$tables$voice["Talk"], digits=0)` ms). These main effects were qualified by two interactions.
+
+The voice by letter position interaction was significant, `r #E1B_apa_print$full_result$voice_LetterType`. The first letter slowing effect was larger when subjects spoke out loud rather than with their inner voice. Similarly, the linguistic unit by letter position interaction was significant, `r #E1B_apa_print$full_result$linguistic_unit_LetterType`. The first letter slowing effect was larger when subjects said the letters rather than the words as they typed. The three-way interaction was not significant, `r #E1B_apa_print$full_result$voice_linguistic_unit_LetterType`.
+
+-->
+
+
 
 
 ```{r, eval=FALSE}

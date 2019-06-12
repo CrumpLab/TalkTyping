@@ -76,13 +76,13 @@ continuousTyping<-function (keytimes,keypresses,dict){
 #  data
 
 ```{r,eval=FALSE}
-setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E3/delayedFeedbackData")
+#setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E3/delayedFeedbackData")
 
 
-fnames<-list.files()
+fnames<-list.files("delayedFeedbackData/")
 alldf<-data.frame()
 for(f in fnames){
-test<-scan(file=f, what="character", sep= "\n")
+test<-scan(file=paste0("delayedFeedbackData/",f,collapse=""), what="character", sep= "\n")
 subnum=f
 
 for(i in 0:5){
@@ -164,6 +164,34 @@ restricted_df<-cbind(restricted_df,LetterPosition,LetterType)
 
 #write.table(restricted_df,file="e3dataB.txt",sep="\t")
 
+restricted_df$closest[is.na(restricted_df$closest)] <- ""
+
+letter_accuracy <- restricted_df$accuracy
+for(i in 1:dim(restricted_df)[1]){
+  clet <- as.character(restricted_df[i,]$letters)
+  cword <- unlist(strsplit(as.character(restricted_df[i,]$closest),split=""))
+  if(restricted_df$accuracy[i] == 0){
+    if(length(cword)>0){
+      if(restricted_df[i,]$LetterPosition <= length(cword)){
+        if(clet != " "){
+          if(clet == cword[restricted_df[i,]$LetterPosition]){
+            letter_accuracy[i] <- 1
+          } else {
+            letter_accuracy[i] <- 0
+          }
+        }
+      }
+    }
+  }
+}
+
+restricted_df <- cbind(restricted_df,letter_accuracy)
+
+restricted_df <- restricted_df %>%
+                  rename(delay = suppression)
+
+talk_type_E3_data <- restricted_df
+save(talk_type_E3_data, file="talk_type_E3_data.RData")
 
 ```
 

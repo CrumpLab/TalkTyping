@@ -1,0 +1,465 @@
+---
+title: "Analysis E3 Delayed Auditory Feedback"
+author: "Matt"
+date: "5/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = TRUE)
+```
+
+# Load Libraries
+
+```{r}
+library(papaja)
+library(TalkTyping)
+library(dplyr)
+library(Crump)
+library(xtable)
+library(ggplot2)
+library(ggpubr)
+library(forcats)
+```
+
+# E3 IKSI Analysis
+
+```{r}
+#load E2 data
+E3_data <- talk_type_E3_data
+
+# IKSI analysis
+
+E3_data <- E3_data %>%
+           filter(letter_accuracy == 1,
+                           iksis < 5000,
+                           LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   suppression = as.factor(delay),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,delay,LetterType) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+                  
+E3_aov_out <- aov(mean_iksi ~ delay*LetterType + 
+                    Error(subject/(delay*LetterType)), E3_data)
+
+knitr::kable(xtable(summary(E3_aov_out)))
+
+E3_apa_print <- apa_print(E3_aov_out)
+E3_means <- model.tables(E3_aov_out,"means")
+
+```
+
+# First Letter one-way with linear contrasts
+
+```{r}
+#load E3 data
+E3_data <- talk_type_E3_data
+
+# IKSI analysis
+
+#E3_data$suppression <- fct_relevel(E3_data$suppression,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E3_data <- E3_data %>%
+           filter(letter_accuracy == 1,
+                           iksis < 5000,
+                           LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   delay = as.factor(delay),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,delay,LetterType) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+
+E3_FL_data <- E3_data %>%
+                filter(LetterType == "First")
+
+E3_FL_aov_out <- aov(mean_iksi ~ delay + 
+                    Error(subject/(delay)), E3_FL_data)
+
+knitr::kable(xtable(summary(E3_FL_aov_out)))
+
+E3_FL_apa_print <- apa_print(E3_FL_aov_out)
+E3_FL_means <- model.tables(E3_FL_aov_out,"means")
+
+```
+
+## Plot
+
+```{r}
+E3_FL_iksi_table <- E3_FL_data %>%
+              group_by(delay) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+
+E3_FL_graph_iksi <- ggplot(E3_FL_iksi_table, aes(x=delay,
+                                             y=mIKSI))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(100,600))+
+  scale_y_continuous(minor_breaks=seq(100,600,25),
+                     breaks=seq(100,600,100))+
+   #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean IKSI (ms)")+
+  theme(axis.title.x = element_blank())+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ # facet_wrap(~delay, scales = "free_x",
+ #            strip.position="bottom")
+
+knitr::kable(E3_FL_iksi_table)
+E3_FL_graph_iksi
+```
+
+
+# Middle Letter one-way with linear contrasts
+
+```{r}
+#load E3 data
+E3_data <- talk_type_E3_data
+
+# IKSI analysis
+
+#E3_data$delay <- fct_relevel(E3_data$delay,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E3_data <- E3_data %>%
+           filter(letter_accuracy == 1,
+                           iksis < 5000,
+                           LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   delay = as.factor(delay),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,delay,LetterType) %>%
+            summarise(mean_iksi = mean(modified_recursive_moving(iksis)$restricted),
+                      prop_removed = modified_recursive_moving(iksis)$prop_removed)
+
+E3_ML_data <- E3_data %>%
+                filter(LetterType == "Middle")
+
+E3_ML_aov_out <- aov(mean_iksi ~ delay + 
+                    Error(subject/(delay)), E3_ML_data)
+
+knitr::kable(xtable(summary(E3_ML_aov_out)))
+
+E3_ML_apa_print <- apa_print(E3_ML_aov_out)
+E3_ML_means <- model.tables(E3_ML_aov_out,"means")
+
+```
+
+## Plot
+
+```{r}
+E3_ML_iksi_table <- E3_ML_data %>%
+              group_by(delay) %>%
+              summarize(mIKSI = mean(mean_iksi),
+                        sem = sd(mean_iksi)/sqrt(length(mean_iksi)))
+
+E3_ML_graph_iksi <- ggplot(E3_ML_iksi_table, aes(x=delay,
+                                             y=mIKSI))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mIKSI-sem,
+                    ymax=mIKSI+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(100,600))+
+  scale_y_continuous(minor_breaks=seq(100,600,100),
+                     breaks=seq(100,500,25))+
+   #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean IKSI (ms)")+
+  theme(axis.title.x = element_blank())+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ # facet_wrap(~delay, scales = "free_x",
+ #            strip.position="bottom")
+
+knitr::kable(E3_ML_iksi_table)
+E3_ML_graph_iksi
+```
+
+
+
+# First Letter Accuracy one-way with linear contrasts
+
+```{r}
+#load E3 data
+E3_data <- talk_type_E3_data
+
+# IKSI analysis
+
+#E3_data$delay <- fct_relevel(E3_data$delay,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E3_data <- E3_data %>%
+           filter(LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   delay = as.factor(delay),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,delay,LetterType) %>%
+            summarise(mean_acc = mean(letter_accuracy))
+
+E3acc_FL_data <- E3_data %>%
+                filter(LetterType == "First")
+
+E3acc_FL_aov_out <- aov(mean_acc ~ delay + 
+                    Error(subject/(delay)), E3acc_FL_data)
+
+knitr::kable(xtable(summary(E3acc_FL_aov_out)))
+
+E3acc_FL_apa_print <- apa_print(E3acc_FL_aov_out)
+E3acc_FL_means <- model.tables(E3acc_FL_aov_out,"means")
+
+```
+
+## Plot
+
+```{r}
+E3acc_FL_table <- E3acc_FL_data %>%
+              group_by(delay) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc)))
+
+E3acc_FL_graph_acc <- ggplot(E3acc_FL_table, aes(x=delay,
+                                             y=mAcc))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(0.8,1))+
+  scale_y_continuous(minor_breaks=seq(0.8,1,.1),
+                     breaks=seq(0.8,1,.1))+
+   #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean Accuracy")+
+  theme(axis.title.x = element_blank())+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ # facet_wrap(~delay, scales = "free_x",
+ #            strip.position="bottom")
+
+knitr::kable(E3acc_FL_table)
+E3acc_FL_graph_acc
+```
+
+
+## contrasts
+
+```{r}
+# 0 vs 100
+
+E3acc_FL_0vs100 <- apa_print(t_contrast_rm(df=E3acc_FL_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D0A","D0B"),
+                             B_levels = c("D100A","D100B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+# 0 vs 200
+
+E3acc_FL_0vs200 <- apa_print(t_contrast_rm(df=E3acc_FL_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D0A","D0B"),
+                             B_levels = c("D200A","D200B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+# 200 vs 100
+
+E3acc_FL_200vs100 <- apa_print(t_contrast_rm(df=E3acc_FL_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D200A","D200B"),
+                             B_levels = c("D100A","D100B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+
+```
+
+
+
+# Middle Letter Accuracy one-way with linear contrasts
+
+```{r}
+#load E3 data
+E3_data <- talk_type_E3_data
+
+# IKSI analysis
+
+#E3_data$delay <- fct_relevel(E3_data$delay,c("Normal","SayThe","TueThur","Alphabet","RandLetter","Count"))
+
+E3_data <- E3_data %>%
+           filter(LetterType != "Space") %>%
+            mutate(subject = as.factor(subject),
+                   delay = as.factor(delay),
+                   LetterType = as.factor(LetterType)) %>%
+            group_by(subject,delay,LetterType) %>%
+            summarise(mean_acc = mean(letter_accuracy))
+
+E3acc_ML_data <- E3_data %>%
+                filter(LetterType == "Middle")
+
+E3acc_ML_aov_out <- aov(mean_acc ~ delay + 
+                    Error(subject/(delay)), E3acc_ML_data)
+
+knitr::kable(xtable(summary(E3acc_ML_aov_out)))
+
+E3acc_ML_apa_print <- apa_print(E3acc_ML_aov_out)
+E3acc_ML_means <- model.tables(E3acc_ML_aov_out,"means")
+
+```
+
+## Plot
+
+```{r}
+E3acc_ML_table <- E3acc_ML_data %>%
+              group_by(delay) %>%
+              summarize(mAcc = mean(mean_acc),
+                        sem = sd(mean_acc)/sqrt(length(mean_acc)))
+
+E3acc_ML_graph_acc <- ggplot(E3acc_ML_table, aes(x=delay,
+                                             y=mAcc))+
+  geom_bar(stat="identity", position="dodge", fill="grey")+
+  geom_errorbar(aes(ymin=mAcc-sem,
+                    ymax=mAcc+sem), width=.1,
+                linetype="solid", position=position_dodge(.9))+
+  scale_fill_grey(start = 0.6, end = 0.8, na.value = "red",
+  aesthetics = "fill")+
+  theme_classic(base_size=9)+
+  theme(legend.position = "top",
+        legend.title = element_blank())+
+  coord_cartesian(ylim=c(0.8,1))+
+  scale_y_continuous(minor_breaks=seq(0.8,1,.1),
+                     breaks=seq(0.8,1,.1))+
+   #scale_x_discrete(labels = c('Normal',
+  #                            'Letter',
+  #                            'Word',
+  #                            'Letter',
+  #                            'Word'))+
+  ylab("Mean Accuracy")+
+  theme(axis.title.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ # facet_wrap(~delay, scales = "free_x",
+ #            strip.position="bottom")
+
+knitr::kable(E3acc_ML_table)
+E3acc_ML_graph_acc
+```
+
+
+## contrasts
+
+```{r}
+# 0 vs 100
+
+E3acc_ML_0vs100 <- apa_print(t_contrast_rm(df=E3acc_ML_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D0A","D0B"),
+                             B_levels = c("D100A","D100B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+# 0 vs 200
+
+E3acc_ML_0vs200 <- apa_print(t_contrast_rm(df=E3acc_ML_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D0A","D0B"),
+                             B_levels = c("D200A","D200B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+# 200 vs 100
+
+E3acc_ML_200vs100 <- apa_print(t_contrast_rm(df=E3acc_ML_data,
+                             subject = "subject",
+                             dv = "mean_acc",
+                             condition = "delay",
+                             A_levels = c("D200A","D200B"),
+                             B_levels = c("D100A","D100B"),
+                             contrast_weights = c(-1/2,-1/2,1/2,1/2) ))
+
+```
+
+
+# speed accuracy tradeoff
+
+```{r}
+library(ggrepel)
+E3_iksi_both <- rbind(E3_FL_iksi_table,
+                       E3_ML_iksi_table)
+
+E3_iksi_both <- cbind(E3_iksi_both, 
+                       Letter_Position = rep(c("First","Middle"), each=6))
+
+E3_acc_both <- rbind(E3acc_FL_table,
+                       E3acc_ML_table)
+
+E3_acc_both <- cbind(E3_acc_both, 
+                       Letter_Position = rep(c("First","Middle"), each=6))
+
+E3_SA <- cbind(E3_iksi_both, accuracy = E3_acc_both$mAcc)
+
+E3_SA_graph <- ggplot(E3_SA, aes(x=mIKSI,  y=accuracy,
+                   shape=Letter_Position,
+                   color=Letter_Position,
+                   label=delay))+
+  geom_point()+
+  geom_text_repel(size=1.7, color="black")+
+  coord_cartesian(xlim=c(100,700), ylim=c(.8,1))+
+  scale_x_continuous(breaks=seq(100,700,100))+
+  scale_color_grey(start = 0.2, end = 0.5, na.value = "red",
+  aesthetics = "color", guide =FALSE)+
+  theme_classic(base_size=10)+
+  ylab("Mean Accuracy")+
+  xlab("Mean IKSI (ms)")+
+  #facet_wrap(~Letter_Position, nrow=2,
+  #           strip.position="right")+
+  theme(legend.position ="top",
+        legend.direction = "horizontal")+
+  guides(shape = guide_legend(label.hjust = 0,
+                              keywidth=0.1))+
+  labs(shape="Letter")
+  
+
+E3_SA_graph
+
+```
+
+
+# Save all
+
+```{r, eval=T}
+save.image(file="E3_workspace.RData")
+```
+
+

@@ -18,6 +18,7 @@ require(plyr)
 require(pander)
 require(knitr)
 require(xtable)
+library(data.table)
 ```
 
 # get demographics
@@ -51,7 +52,7 @@ talk_type_E1A_dmg <- talk_type_E1A_dmg %>%
 ```{r,eval=FALSE}
 a<-fread("external_hit.results")
 
-setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
+#setwd("~/Dropbox/Research/Manuscripts/2017 Talking&Typing/Analysis/E1a")
 
 AllWPM<-matrix(0,ncol=2,nrow=48)
 df<-data.frame()

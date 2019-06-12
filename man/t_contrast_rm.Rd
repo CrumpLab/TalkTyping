@@ -5,7 +5,7 @@
 \title{t-test contrasts for one-way repeated measures}
 \usage{
 t_contrast_rm(df, subject, dv, condition, A_levels, B_levels,
-  contrast_weights)
+  contrast_weights, report = TRUE)
 }
 \arguments{
 \item{df}{A long format dataframe}
@@ -21,10 +21,26 @@ t_contrast_rm(df, subject, dv, condition, A_levels, B_levels,
 \item{B_levels}{character vector, including the names of the levels for the second side of the contrast}
 
 \item{contrast_weights}{numeric vector, including the contrast weights for all levels, in the same order as they are listed in A and B levels}
+
+\item{report}{logical, TRUE = the t.test summary will print out even if you assign the object to a variable, FALSE = no extra printing}
 }
 \value{
 t.test summary
 }
 \description{
 t-test contrasts for one-way repeated measures
+}
+\examples{
+
+some_data <- data.frame(s = rep(1:10,3),
+                       measure = rnorm(30,0,1),
+                       manipulation = as.factor(rep(c("A","B","C"),each=10)))
+t_contrast_rm(df = some_data,
+              subject = "s",
+              dv = "measure",
+              condition = "manipulation",
+              A_levels = c("A"),
+              B_levels = c("B","C"),
+              contrast_weights = c(-1,.5,.5))
+
 }

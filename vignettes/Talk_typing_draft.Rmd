@@ -51,6 +51,13 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = TRUE)
+```
+
 ```{r load_packages, include = FALSE}
 library(papaja)
 library(TalkTyping)
@@ -60,6 +67,8 @@ require(Crump)
 require(dplyr)
 require(knitr)
 require(xtable)
+library(gridExtra)
+library(ggrepel)
 ```
 
 ```{r analysis_preferences, echo=FALSE}
@@ -103,21 +112,21 @@ Open Questions:
 
 ## Hierarchical control and typing
 
-Typing is assumed to be controlled by hierarchically nested control loops [@LoganHierarchicalcontrolcognitive2011]. The outer loop relies on language comprehension and production to turn ideas into words and sentences. Word level-representations are then sent as goals to an inner loop that controls individual finger movements to individual keystrokes for each letter in a word. 
+Typing is assumed to be controlled by hierarchically nested control loops [@loganHierarchicalControlCognitive2011]. The outer loop relies on language comprehension and production to turn ideas into words and sentences. Word level-representations are then sent as goals to an inner loop that controls individual finger movements to individual keystrokes for each letter in a word. 
 
-The two loops are informationally encapsulated modules [@Fodormodularitymindessay1983], and the outer loop does not know the details of how the inner loop accomplishes keystrokes [@Loganlefthanddoesn2009a;@Liuyouknowwhere2010]. However, the two loops must nevertheless be coordinated to accomplish accurate typing. Coordination is theorized to be accomplished by intermediate word-level representations. In other words, the tacit assumption is that multi-threading enables word production for typing to be controlled by the same word-level codes used for speaking.
+The two loops are informationally encapsulated modules [@fodorModularityMindEssay1983], and the outer loop does not know the details of how the inner loop accomplishes keystrokes [@loganLeftHandDoesn2009;@liuYouKnowWhere2010]. However, the two loops must nevertheless be coordinated to accomplish accurate typing. Coordination is theorized to be accomplished by intermediate word-level representations. In other words, the tacit assumption is that multi-threading enables word production for typing to be controlled by the same word-level codes used for speaking.
 
-These ideas have been instantiated by formal computational models of typing in different ways. For example,  in @RumelhartSimulatingskilledtypist1982 typing model, word representations cause the parallel activation of letter units in a response scheduling buffer, which then controls individual keystrokes for all letters in the word. More recently, @logan_2018 showed that general memory process could use word-level representations to control the sequential execution of letter-level actions by a context, retrieval, and updating process (CRU). Although both models explain the process of serial ordering by different mechanisms, they commonly rely on higher level word-level codes to trigger lower level actions at the keystroke level.
+These ideas have been instantiated by formal computational models of typing in different ways. For example, in @rumelhartSimulatingSkilledTypist1982 typing model, word representations cause the parallel activation of letter units in a response scheduling buffer, which then controls individual keystrokes for all letters in the word. More recently, @loganAutomaticControlHow2018 showed that general memory process could use word-level representations to control the sequential execution of letter-level actions by a context, retrieval, and updating process (CRU). Although both models explain the process of serial ordering by different mechanisms, they commonly rely on higher level word-level codes to trigger lower level actions at the keystroke level.
 
 ## Evidence for word-level representations in typing
 
 Several line of evidence are consistent with word-level representations from the outer loop providing control functions over inner loop keystroke sequencing processes. We describe the evidence, and then consider whether the word-level representations controlling typing are the same one used for controlling speech, which would suggest that language production can output actions in a multi-threaded fashion, with threads for speech and typing.
 
-Typing speed is fastest for words and decreases as letter strings approach random orders [@shaffer_typing_1968; @behmer_crunching_2017]. This finding is consistent with the idea that typists use word-representations to control fluent typing, and that typing becomes disfluent when word-representations (e.g., for random strings) are unavailable. At the same time, the differences between typing words and non-word strings that approximate the structure of words to various degrees could reflect a frequency sensitive learning process [@logan_toward_1988] that operates at the letter level, or n-gram level (e.g., letter bigrams or trigrams).
+Typing speed is fastest for words and decreases as letter strings approach random orders [@shafferTypingPerformanceFunction1968; @behmerCrunchingBigData2017]. This finding is consistent with the idea that typists use word-representations to control fluent typing, and that typing becomes disfluent when word-representations (e.g., for random strings) are unavailable. At the same time, the differences between typing words and non-word strings that approximate the structure of words to various degrees could reflect a frequency sensitive learning process [@loganInstanceTheoryAutomatization1988] that operates at the letter level, or n-gram level (e.g., letter bigrams or trigrams).
 
-First-letter and mid-word slowing phenomenon [@ostry_determinants_1983] in typing show that the first letter in a word is typed more slowly than the remaining letters, and the middle letter in a word is generally typed more slowly than the surrounding letters. First letter slowing could reflect the planning or buffering time necessary for the outer loop to construct and send a word-level represention to the inner loop. Mid-word slowing could reflect a similar planning process operating at the level of syllables [@massaro_typing_1984; @PinetTypingwritingLinguistic2016; @will_linguistic_2006], which appear in the middle of words. Alternatively, @crump2018instance proposed that first and middle letter slowing could be explained by letter-level informational uncertainty, as a function of letter position, word length, and previous letter contexts. Although the found that letter uncertainty explained a large portion of the variance in keystroke times for letters in the contexts, they also found that first letter keystroke times were longer than would be expected on the basis of letter uncertainty alone. They concluded that first-letter slowing reflects a combination of planning time and learned sensitivity to the predictability of letters in those contexts.
+First-letter and mid-word slowing phenomenon [@ostryDeterminantsInterkeyTimes1983] in typing show that the first letter in a word is typed more slowly than the remaining letters, and the middle letter in a word is generally typed more slowly than the surrounding letters. First letter slowing could reflect the planning or buffering time necessary for the outer loop to construct and send a word-level represention to the inner loop. Mid-word slowing could reflect a similar planning process operating at the level of syllables [@massaroTypingLetterStrings1984; @pinetTypingWritingLinguistic2016; @willLinguisticUnitsWord2006], which appear in the middle of words. Alternatively, @crumpInstanceTheoryPredictsInpress proposed that first and middle letter slowing could be explained by letter-level informational uncertainty, as a function of letter position, word length, and previous letter contexts. Although the found that letter uncertainty explained a large portion of the variance in keystroke times for letters in the contexts, they also found that first letter keystroke times were longer than would be expected on the basis of letter uncertainty alone. They concluded that first-letter slowing reflects a combination of planning time and learned sensitivity to the predictability of letters in those contexts.
 
-Last, @crump2010hierarchical showed that words and nonwords differentially prime their constituent letters. They presented a word or non-word as a prime, and then had subjects respond to a subsequent letter probe. Word string primes facilitated letters for all positions in a word, compared to letters not in the word. However, non-word string primes only showed facilitation for letter probes from the first position in the string. This finding suggests that a word-level representation plays a role in facilitating the production of all of its constituent letters.
+Last, @crumpHierarchicalControlSkilled2010 showed that words and nonwords differentially prime their constituent letters. They presented a word or non-word as a prime, and then had subjects respond to a subsequent letter probe. Word string primes facilitated letters for all positions in a word, compared to letters not in the word. However, non-word string primes only showed facilitation for letter probes from the first position in the string. This finding suggests that a word-level representation plays a role in facilitating the production of all of its constituent letters.
 
 ## Common codes and multi-threaded language production
 
@@ -155,7 +164,7 @@ In Experiment 1a and 1b we had typists speak the words or letters they were typi
 
 # Experiment 1a and 1b: Speaking words or letters during typing
 
-The immediate goal of typing is to produce letters in the correct order during word and sentence production. Based on the idea that verbal codes are used during typing, we assumed that typists routinely verbalize, either covertly or overtly, aspects of the letters they are typing. For example, as I type this sentence, my subjective experience is that I silently voice the words I am typing. In Experiment 1a, we asked typists recruited online from Amazon's mechanical turk to copy-type a paragraph under two conditions to silently voice each word as they typed, or silently voice each letter as they typed. To gain an understanding of the subjective experience of using the inner voice during typing, we also asked typists to report what their inner voice usually says during typing (e.g., words, letters, both, or none). Because we had no way of controlling whether our subjects adopted our instructions, we conducted Experiment 1b as a lab-based replication and extension of Experiment 1a. Here, subjects copied five paragraphs. The first paragraph involved only the instruction to copy-type as quickly and accurately as possible. Across the remaining four paragraphs we manipulated whether subjects spoke out loud or silently to themselves, combined factorially with whether they spoke words or letters during typing. If typists use verbal codes at the word level during typing, then we expected that typing speed should be faster when subjects were instructed to say words rather than letters as they typed.
+The immediate goal of typing is to produce letters in the correct order during word and sentence production. Based on the idea that verbal codes are used during typing, we assumed that typists routinely verbalize, either covertly or overtly, aspects of the letters they are typing. For example, as I type this sentence, my subjective experience is that I silently voice the words I am typing. In Experiment 1a, we asked typists recruited online from Amazon's mechanical turk to copy-type a paragraph under two conditions to silently voice each word as they typed, or silently voice each letter as they typed. To gain an understanding of the subjective experience of using the inner voice during typing, we also asked typists to report what their inner voice usually says during typing (e.g., words, letters, both, or none). Because we had no way of controlling whether our subjects adopted our instructions, we conducted Experiment 1b as a lab-based replication and extension of Experiment 1a. In Experiment 1b, subjects copied five paragraphs. The first paragraph provided a baseline and involved only the instruction to copy-type as quickly and accurately as possible. Across the remaining four paragraphs we manipulated whether subjects spoke out loud or silently to themselves, combined factorially with whether they spoke words or letters during typing. If typists use verbal codes at the word level during typing, then we expected that typing speed should be faster when subjects were instructed to say words rather than letters as they typed.
 
 ## Methods
 
@@ -222,12 +231,13 @@ round(proportion_word[proportion_word$InnerVoice=="undefined",]$p_word,digits=2)
 ```
 
 ```{r E1A, echo=FALSE}
+# See E1A_Analysis.Rmd
 load("E1A_workspace.RData")
 ```
 
 ### Experiment 1a
 
-For each subject, we applied the following pre-processing steps. We included IKSIs only for keystrokes involving a lower case letter, and only for correct keystrokes that were preceded by a correct keystroke. Outlier IKSIs were removed for each subject, on a cell-by-cell basis, using the @van1994solution non-recursive moving criterion procedure, which eliminated approximately `r round(mean(E1_data$prop_removed), digits=2)` of IKSIs from further analysis. An alpha criterion of .05 was set for all analyses.
+For each subject, we applied the following pre-processing steps. We included IKSIs only for successively correct keystrokes and lower case letters. Outlier IKSIs were removed for each subject on a cell-by-cell basis using the @vanselstSolutionEffectSample1994 non-recursive moving criterion procedure, which eliminated approximately `r round(mean(E1_data$prop_removed), digits=2)` of IKSIs from further analysis. An alpha criterion of .05 was set for all analyses.
 
 Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Linguistic Unit: Say Letters vs. Say Words) x 2 (Letter position: First letter vs. Middle Letter) repeated measures ANOVA. Mean IKSIs are displayed in Figure \@ref(fig:E1Figure).
 
@@ -235,9 +245,9 @@ Mean IKSIs for correctly typed letters were computed for each subject in each co
 ggarrange(E1A_graph_iksi,E1A_graph_acc)
 ```
 
-The main effect of the linguistic unit condition was significant, `r E1_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1_means$tables$linguistic_unit["say_word"], digits=0)`), rather than the letters (`r printnum(E1_means$tables$linguistic_unit["say_letter"], digits=0)`) they were typing.
+The main effect of the linguistic unit condition was significant, `r E1_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r papaja::printnum(E1_means$tables$linguistic_unit["say_word"], digits=0)`), rather than the letters (`r papaja::printnum(E1_means$tables$linguistic_unit["say_letter"], digits=0)`) they were typing.
 
-The main effect of letter position was significant, `r E1_apa_print$full_result$LetterType`. Mean IKSIs were longer for letters in the first position (`r printnum(E1_means$tables$LetterType["First"], digits=0)`), compared to letters in the other positions (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)`).
+The main effect of letter position was significant, `r E1_apa_print$full_result$LetterType`. Mean IKSIs were longer for letters in the first position (`r papaja::printnum(E1_means$tables$LetterType["First"], digits=0)`), compared to letters in the other positions (`r papaja::printnum(E1_means$tables$LetterType["Middle"], digits=0)`).
 
 The interaction between linguistic unit and letter position did not meet the significance criterion, `r E1_apa_print$full_result$linguistic_unit_LetterType`.
 
@@ -248,25 +258,61 @@ Last, prior to the experiments subjects were asked if their inner voice usually 
 ### Experiment 1b
 
 ```{r}
+# see E1B_Analysis.Rmd
 load("E1B_workspace.RData")
 ```
 
 The same pre-processing rules were applied to the data. The outlier elimination procedure excluded an average of  `r round(mean(E1B_data$prop_removed), digits=2)` observations from each condition.  Mean IKSIs and accuracies for each condition are displayed in Figure \@ref(fig:E1BFigure)
 
-```{r E1BFigure, echo=FALSE, fig.width=6, fig.height=3, fig.cap="Mean interkeystroke intervals (IKSIs in ms), and mean accuracy as a function of voice (silent vs. talking), linguistic unit (Say Letter vs. Say word), and letter position (first vs. middle)."}
-ggarrange(E1B_graph_iksi,E1B_graph_acc)
+```{r E1BFigure, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the five paragraph typing conditions. The scatterplots for each letter type show mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25}
+
+grid.arrange(
+  ggarrange(E1B_FL_graph_iksi,E1B_ML_graph_iksi, 
+            E1B_FL_acc_graph, E1B_ML_acc_graph, nrow=2, ncol=2,
+            labels = list(A="First Letter ",
+                          B="Middle Letters"),
+            font.label = list(size=10),
+            hjust=-.8),
+  E1B_SA_graph,
+  ncol = 2, 
+  widths=c(4.875,2))  
+```
+ 
+#### First letter IKSIs
+
+Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. 
+
+```{r E1BFL, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the five paragraph typing conditions. The scatterplots for each letter type show mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=FALSE}
+
+grid.arrange(
+  ggarrange(E1B_FL_graph_iksi,E1B_ML_graph_iksi, 
+            E1B_FL_acc_graph, E1B_ML_acc_graph, nrow=2, ncol=2,
+            labels = list(A="First Letter ",
+                          B="Middle Letters"),
+            font.label = list(size=10),
+            hjust=-.8),
+  E1B_SA_graph,
+  ncol = 2, 
+  widths=c(4.875,2))  
 ```
 
+The main effect of paragraph typing condition was significant, `r E1B_FL_apa_print$full_result$condition`. Linear contrasts were constructed to interpret the major patterns. First, normal typing compared to silent-word and talk-word conditions were not different, `r E1B_FL_NvsW$full_result`. The instruction to say each word (silently or out loud) while typing did not facilitate or interfere with first letter typing time compared to normal typing. One possibility is that normal typing typically involves saying words while typing, so the added instruction may be redundant with normal activity during typing. 
 
-Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a 2 (Voice: Silent vs. Talk) x 2 (Linguistic Unit: words vs. letters) x 2 (Letter position: first vs. middle) repeated measures ANOVA. 
+Second, mean first letter IKSIs for silent-letter and talk-letter conditions were shorter than the other conditions, `r E1B_FL_NWvsL$full_result`. The data clearly show that first-letter typing time increases when subjects say letters rather than words while typing. Finally, saying letters out loud appeared to slow down first-letter typing compared to saying letters silently, `r E1B_FL_SLvsTL$full_result`.
 
-The main effect of the linguistic unit condition was significant, `r E1B_apa_print$full_result$linguistic_unit`. Mean IKSIs were shorter when subjects were instructed to use their inner voice to say the words (`r printnum(E1B_means$tables$linguistic_unit["Word"], digits=0)` ms), rather than the letters (`r printnum(E1B_means$tables$linguistic_unit["Letter"], digits=0)` ms) they were typing. The main effect of letter position was significant, `r E1B_apa_print$full_result$LetterType`. Mean IKSIs were longer for the first letter (`r printnum(E1B_means$tables$LetterType["First"], digits=0)` ms), compared to other letters  (`r printnum(E1_means$tables$LetterType["Middle"], digits=0)` ms). The main effect of voice was not significant, `r E1B_apa_print$full_result$coice`. Mean IKSIs were shorter for silent speaking (`r printnum(E1B_means$tables$voice["Silent"], digits=0)` ms), compared to talking out loud  (`r printnum(E1B_means$tables$voice["Talk"], digits=0)` ms). These main effects were qualified by two interactions.
+#### Middle letter IKSIs
 
-The voice by letter position interaction was significant, `r E1B_apa_print$full_result$voice_LetterType`. The first letter slowing effect was larger when subjects spoke out loud rather than with their inner voice. Similarly, the linguistic unit by letter position interaction was significant, `r E1B_apa_print$full_result$linguistic_unit_LetterType`. The first letter slowing effect was larger when subjects said the letters rather than the words as they typed. The three-way interaction was not significant, `r E1B_apa_print$full_result$voice_linguistic_unit_LetterType`.
+A corresponding ANOVA was conducted on IKSIs for all correctly typed middle letters. 
 
-The analysis of accuracy showed a main effect of linguistic unit, `r E1Bacc_apa_print$full_result$linguistic_unit`. Subjects were more accurate when saying letters (`r printnum(E1Bacc_means$tables$linguistic_unit["Letter"], digits=2)`), than words (`r printnum(E1Bacc_means$tables$linguistic_unit["Word"], digits=2)` ms). The main effect of letter position was significant, `r E1Bacc_apa_print$full_result$LetterType`. Subjects were more accurate for the first letter (`r printnum(E1Bacc_means$tables$LetterType["First"], digits=2)`), compared to other letters  (`r printnum(E1Bacc_means$tables$LetterType["Middle"], digits=2)`). The main effect of voice was not significant, `r E1Bacc_apa_print$full_result$voice`. These main effects were qualified by two-way interactions.
+The main effect of paragraph typing condition was significant, `r E1B_ML_apa_print$full_result$condition`. Mean middle letter IKSIs during normal typing were longer compared to silent-word and talk-word conditions, `r E1B_ML_NvsW$full_result`. Saying words silently or out loud appeared to facilitate typing speed by a small, yet detectable amount.
 
-The interaction between voice and linguistic unit was significant, `r E1Bacc_apa_print$full_result$voice_linguistic_unit`. The decrease in accuracy for saying words vs letters was larger when subjects spoke out loud, compared to speaking silently with their inner voice. The interaction between voice and letter position was significant, `r E1Bacc_apa_print$full_result$voice_LetterType`. The decrease in an accuracy for middle letters vs first letters was larger when subjects spoke out loud, compared to speaking silently. The interacdtion between linguistic unit and letter position was significant, `r E1Bacc_apa_print$full_result$linguistic_unit_LetterType`. The decrease in accuracy for middle letters vs first letters was larger when subjects said the word rather than the letter they were typing. The three-way interaction was not significant, `r E1Bacc_apa_print$full_result$voice_linguistic_unit_LetterType`
+Mean IKSIs for silent-letter and talk-letter conditions were much longer than the other conditions, `r E1B_ML_NWvsL$full_result`. But, there was no difference between the silent-letter and talk-letter conditions, `r E1B_ML_SLvsTL$full_result`.
+
+#### Accuracy
+
+The analysis of accuracy showed a main effect of linguistic unit, `r E1Bacc_apa_print$full_result$linguistic_unit`. Subjects were more accurate when saying letters (`r papaja::printnum(E1Bacc_means$tables$linguistic_unit["Letter"], digits=2)`), than words (`r papaja::printnum(E1Bacc_means$tables$linguistic_unit["Word"], digits=2)` ms). The main effect of letter position was significant, `r E1Bacc_apa_print$full_result$LetterType`. Subjects were more accurate for the first letter (`r papaja::printnum(E1Bacc_means$tables$LetterType["First"], digits=2)`), compared to other letters  (`r papaja::printnum(E1Bacc_means$tables$LetterType["Middle"], digits=2)`). The main effect of voice was not significant, `r E1Bacc_apa_print$full_result$voice`. These main effects were qualified by two-way interactions.
+
+The interaction between voice and linguistic unit was significant, `r E1Bacc_apa_print$full_result$voice_linguistic_unit`. The decrease in accuracy for saying words vs letters was larger when subjects spoke out loud, compared to speaking silently with their inner voice. The interaction between voice and letter position was significant, `r E1Bacc_apa_print$full_result$voice_LetterType`. The decrease in an accuracy for middle letters vs first letters was larger when subjects spoke out loud, compared to speaking silently. The interaction between linguistic unit and letter position was significant, `r E1Bacc_apa_print$full_result$linguistic_unit_LetterType`. The decrease in accuracy for middle letters vs first letters was larger when subjects said the word rather than the letter they were typing. The three-way interaction was not significant, `r E1Bacc_apa_print$full_result$voice_linguistic_unit_LetterType`
 
 The mean responses for the inner voice questionnaire were that subjects' inner voice was silent 3%, said words 69%, said letters 16%, or said unrelated words or letters 12% of the time during typing.
 
@@ -297,23 +343,93 @@ The same general typing test procedure from Experiment 1b was used, with the exc
 	Say Tuesday/Thursday instructions:
 	Say alphabet instructions:
 	Say random letters instructions:
-	Count instructions:
+	Count instruction
+	
+
 	
 ## Results
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 load("E2_workspace.RData")
 ```
 
-```{r suppression, echo=FALSE}
-ggarrange(E2_graph_iksi,E2_graph_acc, nrow=2)
+### First letter IKSIs
+
+Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. 
+
+```{r E2, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the six paragraph typing conditions. The scatterplots for each letter type show mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=TRUE}
+
+grid.arrange(
+  ggarrange(E2_FL_graph_iksi,E2_ML_graph_iksi, 
+            E2acc_FL_graph_acc, E2acc_ML_graph_acc, nrow=2, ncol=2,
+            labels = list(A="First Letter ",
+                          B="Middle Letters"),
+            font.label = list(size=10),
+            hjust=-.8),
+  E2_SA_graph,
+  ncol = 2, 
+  widths=c(4.875,2))  
 ```
 
+The main effect of paragraph typing condition was significant, `r E2_FL_apa_print$full_result$suppression`. Linear contrasts were constructed to interpret the major patterns. First letter mean IKSIs during normal typing were not significantly different from the Say The, and Tuesday Thursday conditions, `r E2_FL_NvsTheThu$full_result`. First letter mean IKSIs were longer when saying the Alphabet compared to Say The, and Tuesday Thursday, `r E2_FL_AlphavsTheThu$full_result`. Finally, first letter mean IKSIs were longest while saying Random Letters and Counting compared to the Alphabet condition, `r E2_FL_AlphavsRandCnt$full_result`.
+
+### Middle letter IKSIs
+
+Mean correctly typed middle letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. The main effect of paragraph typing condition was significant, `r E2_ML_apa_print$full_result$suppression`. Middle letter mean IKSIs during normal typing were not significantly different from the Say The, Tuesday Thursday, Alphabet, and Counting conditions, `r E2_ML_NvsAllbR$full_result`. Middle letter mean IKSIs were longer in the Random Letter condition compared to normal typing, `r E2_ML_RandvsNormal$full_result`.
+
+### Accuracy
+
+Mean first letter accuracies for each subject in each condition were submitted to a one-way repeated measures ANOVA. The main effect of paragraph typing condition was significant, `r E2acc_FL_apa_print$full_result$suppression`. Mean accuracy during normal typing was not different from the Say The and Tuesday Thursday conditions, `r E2acc_FL_NvsTheThur$full_result`. Mean accuracy for the Alphabet, Random Letter, and Counting conditions was significantly worse compared to the former conditions, `r E2acc_FL_NTheThvsARC$full_result`.
+
+For middle letter accuracies, the main effect of paragraph typing condition was significant, `r E2acc_ML_apa_print$full_result$suppression`. Mean accuracy during normal typing was not different from the Say The and Tuesday Thursday conditions, `r E2acc_ML_NvsTheThur$full_result`. Mean accuracy for the Alphabet, Random Letter, and Counting conditions was significantly worse compared to the former conditions, `r E2acc_ML_NTheThvsARC$full_result`.
+
+## Discussion
 
 
-Mean IKSIs for correctly typed letters were computed for each subject in each condition and submitted to a one-way repeated measures ANOVA with Suppression condition (Normal, The, Tuesday/Thursday, Alphabet, Random, and Count) as the sole factor. Mean IKSIs in each condition are displayed in table 2. 
+# Experiment 3: Delayed auditory feedback
 
-The main effect of Suppression was significant, F () = , MSE  = , p < . Post-hoc tests showed that all mean IKSIs in all suppression conditions were significantly slower than the mean IKSI in the normal typing condition. Additionally, X was X etc.
+Delayed auditory feedback is well known to disrupt speech; for example, when a speaker listens to their own voice on a short delay (100 to 300 ms) while speaking. Experiment 3 asked whether delayed auditory feedback would also disrupt typing performance. We had subjects copy-type paragraphs under normal and delayed auditory feedback conditions, which involved speaking the words being typed while hearing the spoken words on a brief auditory delay. If the same control processes responsible for speech are being used to support typing, we expected that delayed auditory feedback would disrupt both speech and typing performance.
+
+## Methods
+
+### Subjects 
+
+X subjects were recruited from the undergraduate population at Brooklyn College, and received course credit for their participation. 
+
+### Apparatus & Stimuli. 
+
+The same apparatus and stimuli from Experiment 1b and 2 were used in Experiment 3.
+
+### Design and Procedure. 
+
+The same general typing test procedure from Experiment 1b was used, with the exception that typists copied X paragraphs. The instructions for each of the conditions were as follows:
+
+## Results
+
+
+```{r, echo=FALSE, eval=TRUE}
+load("E3_workspace.RData")
+```
+
+### First letter IKSIs
+
+Mean correctly typed first letter IKSIs for each subject were submitted to a one-way repeated measures ANOVA. 
+
+```{r E3, fig.cap="Mean IKSIs in milliseconds and mean accuracy for typing the first letter in a word, or all other letters (middle letters) for each of the delayedd auditry feedback conditins. For each letter type, the scatterplot shows mean accuracy by mean IKSI for each typing condition.",fig.width=6.875, fig.env="figure*", fig.height=3.25, eval=TRUE}
+
+grid.arrange(
+  ggarrange(E3_FL_graph_iksi,E3_ML_graph_iksi, 
+            E3acc_FL_graph_acc, E3acc_ML_graph_acc, nrow=2, ncol=2,
+            labels = list(A="First Letter ",
+                          B="Middle Letters"),
+            font.label = list(size=10),
+            hjust=-.8),
+  E3_SA_graph,
+  ncol = 2, 
+  widths=c(4.875,2))  
+```
+
+## Discussion
 
 
 
